@@ -1,0 +1,62 @@
+---
+interface Post {
+  id: string;
+  data: {
+    title: string;
+    date: Date;
+    category: string;
+    description?: string;
+  };
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const categoryLabels: Record<string, string> = {
+  sparks: 'Sparks',
+  murmurs: 'Murmurs',
+  footnotes: 'Footnotes',
+  'midnight-screenings': 'Midnight Screenings',
+};
+
+const sorted = posts.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<ul class="space-y-10">
+  {sorted.map((post) => (
+    <li>
+      <a href={`${base}posts/${post.id}`} class="group block">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="text-xs uppercase tracking-widest text-[var(--color-text-muted)]">
+            {categoryLabels[post.data.category] || post.data.category}
+          </span>
+          <span class="text-[var(--color-border)]">&middot;</span>
+          <time
+            datetime={post.data.date.toISOString()}
+            class="text-xs text-[var(--color-text-muted)]"
+          >
+            {post.data.date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </time>
+        </div>
+        <h3 class="text-xl font-medium tracking-tight group-hover:text-white transition-colors">
+          {post.data.title}
+        </h3>
+        {post.data.description && (
+          <p class="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed">
+            {post.data.description}
+          </p>
+        )}
+      </a>
+    </li>
+  ))}
+</ul>
