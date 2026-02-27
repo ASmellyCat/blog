@@ -1,7 +1,7 @@
 ---
 title: "The Corridor"
 date: 2026-02-25
-category: midnight-screenings
+category: dreams
 description: "A dream about doors that open inward."
 ---
 

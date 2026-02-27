@@ -1,7 +1,7 @@
 ---
 title: "The Shape of an Idea"
 date: 2026-02-15
-category: sparks
+category: stories
 description: "On how ideas arrive uninvited and reshape everything."
 ---
 

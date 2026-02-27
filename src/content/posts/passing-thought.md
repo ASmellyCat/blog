@@ -1,7 +1,7 @@
 ---
 title: "Small Hours"
 date: 2026-02-20
-category: murmurs
+category: feelings
 description: "A brief thought on the quiet between moments."
 ---
 

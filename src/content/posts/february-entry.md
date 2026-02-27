@@ -1,7 +1,7 @@
 ---
 title: "February, Somewhere"
 date: 2026-02-22
-category: footnotes
+category: essays
 description: "A diary entry from an unremarkable day."
 ---
 

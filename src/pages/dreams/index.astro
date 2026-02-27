@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+
+const posts = await getCollection('posts', ({ data }) => data.category === 'dreams');
+---
+
+<BaseLayout title="梦境 / Dreams — blog">
+  <div class="max-w-5xl mx-auto px-6 py-12 lg:flex lg:gap-16">
+    <aside class="lg:w-48 shrink-0 mb-8 lg:mb-0 lg:pt-2">
+      <h1 class="font-serif text-3xl font-bold mb-1">梦境</h1>
+      <p class="text-sm text-[var(--color-text-muted)]">Dreams</p>
+      <p class="mt-4 text-sm text-[var(--color-text-muted)] leading-relaxed">Dreams.</p>
+    </aside>
+    <main class="flex-1 min-w-0">
+      <PostList posts={posts} />
+    </main>
+  </div>
+</BaseLayout>
