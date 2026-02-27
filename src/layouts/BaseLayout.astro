@@ -6,31 +6,74 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'A personal blog' } = Astro.props;
+const { title, description = 'coconut的梦游仙境 — A personal blog' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scanlines">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="theme-color" content="#050510" />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
-    <slot />
-    <footer class="pl-0 lg:pl-[240px]">
-      <div class="max-w-3xl mx-auto px-8 pb-16 pt-20">
-        <div class="border-t border-[var(--color-border)] pt-8">
-          <p class="text-xs text-[var(--color-text-muted)] tracking-widest font-light">&copy; {new Date().getFullYear()}</p>
+    <!-- Animated cyberpunk background -->
+    <div class="cyber-bg" aria-hidden="true">
+      <div class="cyber-bg__grid"></div>
+      <div class="cyber-bg__gradient"></div>
+      <!-- Floating particles -->
+      <div class="cyber-bg__particle" style="left: 5%; width: 3px; height: 3px; background: rgba(0, 240, 255, 0.5); animation-duration: 12s; animation-delay: 0s;"></div>
+      <div class="cyber-bg__particle" style="left: 15%; width: 2px; height: 2px; background: rgba(255, 45, 120, 0.4); animation-duration: 18s; animation-delay: 2s;"></div>
+      <div class="cyber-bg__particle" style="left: 25%; width: 4px; height: 4px; background: rgba(191, 64, 255, 0.3); animation-duration: 15s; animation-delay: 5s;"></div>
+      <div class="cyber-bg__particle" style="left: 35%; width: 2px; height: 2px; background: rgba(0, 240, 255, 0.4); animation-duration: 20s; animation-delay: 1s;"></div>
+      <div class="cyber-bg__particle" style="left: 45%; width: 3px; height: 3px; background: rgba(57, 255, 20, 0.3); animation-duration: 14s; animation-delay: 7s;"></div>
+      <div class="cyber-bg__particle" style="left: 55%; width: 2px; height: 2px; background: rgba(255, 45, 120, 0.5); animation-duration: 16s; animation-delay: 3s;"></div>
+      <div class="cyber-bg__particle" style="left: 65%; width: 3px; height: 3px; background: rgba(191, 64, 255, 0.4); animation-duration: 19s; animation-delay: 6s;"></div>
+      <div class="cyber-bg__particle" style="left: 75%; width: 2px; height: 2px; background: rgba(0, 240, 255, 0.3); animation-duration: 13s; animation-delay: 4s;"></div>
+      <div class="cyber-bg__particle" style="left: 85%; width: 4px; height: 4px; background: rgba(57, 255, 20, 0.4); animation-duration: 17s; animation-delay: 8s;"></div>
+      <div class="cyber-bg__particle" style="left: 92%; width: 2px; height: 2px; background: rgba(255, 45, 120, 0.3); animation-duration: 21s; animation-delay: 10s;"></div>
+    </div>
+
+    <!-- Cursor glow trail -->
+    <div class="cursor-glow" id="cursorGlow" style="opacity: 0;" aria-hidden="true"></div>
+
+    <!-- Page content (above background) -->
+    <div class="relative z-10">
+      <slot />
+      <footer class="pl-0 lg:pl-[260px]">
+        <div class="max-w-3xl mx-auto px-8 pb-16 pt-20">
+          <div class="border-t border-[var(--color-border)] pt-8">
+            <p class="text-xs text-[var(--color-text-muted)] tracking-widest font-light" style="font-family: 'Orbitron', sans-serif;">&copy; {new Date().getFullYear()} <span class="neon-cyan">coconut</span></p>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
+
+    <!-- Cursor trail script -->
+    <script>
+      const glow = document.getElementById('cursorGlow');
+      if (glow) {
+        let visible = false;
+        document.addEventListener('mousemove', (e) => {
+          if (!visible) {
+            glow.style.opacity = '1';
+            visible = true;
+          }
+          glow.style.left = e.clientX + 'px';
+          glow.style.top = e.clientY + 'px';
+        });
+        document.addEventListener('mouseleave', () => {
+          glow.style.opacity = '0';
+          visible = false;
+        });
+      }
+    </script>
   </body>
 </html>

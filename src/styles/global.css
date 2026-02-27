@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', ui-sans-serif, system-ui, sans-serif;
-  --color-bg: #0A0A0A;
-  --color-surface: #141414;
-  --color-border: #1E1E1E;
-  --color-text: #E0E0E0;
-  --color-text-muted: #666666;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Orbitron', 'Inter', sans-serif;
+  --color-bg: #050510;
+  --color-surface: #0a0a1a;
+  --color-border: #1a1a2e;
+  --color-text: #D0D0D0;
+  --color-text-muted: #666680;
   --color-neon-cyan: #00F0FF;
   --color-neon-pink: #FF2D78;
   --color-neon-green: #39FF14;
@@ -26,10 +27,11 @@ html {
 
 body {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 ::selection {
-  background-color: rgba(0, 240, 255, 0.15);
+  background-color: rgba(0, 240, 255, 0.2);
 }
 
 a {
@@ -38,19 +40,11 @@ a {
   transition: all 0.3s ease;
 }
 
-/* Neon glow utility classes */
-.neon-cyan {
-  color: var(--color-neon-cyan);
-}
-.neon-pink {
-  color: var(--color-neon-pink);
-}
-.neon-green {
-  color: var(--color-neon-green);
-}
-.neon-purple {
-  color: var(--color-neon-purple);
-}
+/* === NEON COLOR UTILITIES === */
+.neon-cyan { color: var(--color-neon-cyan); }
+.neon-pink { color: var(--color-neon-pink); }
+.neon-green { color: var(--color-neon-green); }
+.neon-purple { color: var(--color-neon-purple); }
 
 .glow-cyan {
   text-shadow:
@@ -77,7 +71,6 @@ a {
     0 0 40px rgba(191, 64, 255, 0.2);
 }
 
-/* Box glow variants for cards */
 .box-glow-cyan {
   box-shadow:
     0 0 15px rgba(0, 240, 255, 0.15),
@@ -97,4 +90,248 @@ a {
   box-shadow:
     0 0 15px rgba(191, 64, 255, 0.15),
     0 0 30px rgba(191, 64, 255, 0.05);
+}
+
+/* === SCANLINE OVERLAY === */
+.scanlines::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+}
+
+/* === ANIMATED GRADIENT BACKGROUND === */
+.cyber-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.cyber-bg__gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 80%, rgba(191, 64, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(0, 240, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(255, 45, 120, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 10% 20%, rgba(57, 255, 20, 0.03) 0%, transparent 50%);
+  animation: gradientDrift 20s ease-in-out infinite alternate;
+}
+
+@keyframes gradientDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 30px) scale(0.98); }
+  100% { transform: translate(10px, -10px) scale(1.02); }
+}
+
+/* Grid lines (Tron-style) */
+.cyber-bg__grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridScroll 30s linear infinite;
+}
+
+@keyframes gridScroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+/* Floating particles */
+.cyber-bg__particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh) translateX(0);
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translateY(-20vh) translateX(40px);
+  }
+}
+
+/* === GLITCH TITLE ANIMATION === */
+.glitch-title {
+  position: relative;
+  font-family: 'Orbitron', sans-serif;
+  animation: titleFloat 4s ease-in-out infinite;
+}
+
+.glitch-title::before,
+.glitch-title::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.glitch-title::before {
+  color: var(--color-neon-cyan);
+  animation: glitchLeft 3s ease-in-out infinite;
+  clip-path: inset(0 0 60% 0);
+  opacity: 0.7;
+}
+
+.glitch-title::after {
+  color: var(--color-neon-pink);
+  animation: glitchRight 3s ease-in-out infinite;
+  clip-path: inset(60% 0 0 0);
+  opacity: 0.7;
+}
+
+@keyframes titleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes glitchLeft {
+  0%, 85%, 100% { transform: translate(0); }
+  86% { transform: translate(-3px, -1px); }
+  87% { transform: translate(2px, 1px); }
+  88% { transform: translate(-1px, 0); }
+  89% { transform: translate(0); }
+}
+
+@keyframes glitchRight {
+  0%, 90%, 100% { transform: translate(0); }
+  91% { transform: translate(3px, 1px); }
+  92% { transform: translate(-2px, -1px); }
+  93% { transform: translate(1px, 0); }
+  94% { transform: translate(0); }
+}
+
+/* Chinese subtitle dreamcore style */
+.dream-subtitle {
+  background: linear-gradient(90deg, var(--color-neon-cyan), var(--color-neon-pink), var(--color-neon-purple), var(--color-neon-cyan));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 6s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* === CYBERPUNK CARDS === */
+.cyber-card {
+  background: rgba(10, 10, 26, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.cyber-card:hover {
+  transform: scale(1.02);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* === ANIMATED GRADIENT BORDER === */
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.animated-border {
+  --border-angle: 0deg;
+  border: 1px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image:
+    linear-gradient(var(--color-bg), var(--color-bg)),
+    conic-gradient(from var(--border-angle), var(--color-neon-cyan), var(--color-neon-pink), var(--color-neon-purple), var(--color-neon-green), var(--color-neon-cyan));
+  animation: borderRotate 4s linear infinite;
+}
+
+@keyframes borderRotate {
+  to { --border-angle: 360deg; }
+}
+
+/* === NEON LINK UNDERLINE === */
+.neon-link {
+  position: relative;
+}
+
+.neon-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-neon-cyan);
+  box-shadow: 0 0 6px rgba(0, 240, 255, 0.6);
+  transition: width 0.3s ease;
+}
+
+.neon-link:hover::after {
+  width: 100%;
+}
+
+/* === CURSOR GLOW === */
+.cursor-glow {
+  position: fixed;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.4), transparent 70%);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  mix-blend-mode: screen;
+}
+
+/* === CONTENT OVERLAY === */
+.content-panel {
+  background: rgba(5, 5, 16, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 1rem;
+}
+
+/* Heading font override */
+h1, h2, h3 {
+  font-family: var(--font-display);
 }

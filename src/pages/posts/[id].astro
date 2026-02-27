@@ -14,11 +14,11 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-const categoryMeta: Record<string, { cn: string; en: string; neonClass: string }> = {
-  stories: { cn: '故事', en: 'Stories', neonClass: 'neon-cyan' },
-  feelings: { cn: '心情', en: 'Feelings', neonClass: 'neon-pink' },
-  essays: { cn: '随笔', en: 'Essays', neonClass: 'neon-green' },
-  dreams: { cn: '梦境', en: 'Dreams', neonClass: 'neon-purple' },
+const categoryMeta: Record<string, { cn: string; en: string; neonClass: string; glowClass: string; borderColor: string }> = {
+  stories: { cn: '故事', en: 'Stories', neonClass: 'neon-cyan', glowClass: 'glow-cyan', borderColor: 'rgba(0, 240, 255, 0.3)' },
+  feelings: { cn: '心情', en: 'Feelings', neonClass: 'neon-pink', glowClass: 'glow-pink', borderColor: 'rgba(255, 45, 120, 0.3)' },
+  essays: { cn: '随笔', en: 'Essays', neonClass: 'neon-green', glowClass: 'glow-green', borderColor: 'rgba(57, 255, 20, 0.3)' },
+  dreams: { cn: '梦境', en: 'Dreams', neonClass: 'neon-purple', glowClass: 'glow-purple', borderColor: 'rgba(191, 64, 255, 0.3)' },
 };
 
 const base = import.meta.env.BASE_URL;
@@ -26,49 +26,53 @@ const categorySlug = post.data.category;
 const meta = categoryMeta[categorySlug];
 ---
 
-<BaseLayout title={`${post.data.title} — blog`} description={post.data.description}>
+<BaseLayout title={`${post.data.title} — coconut的梦游仙境`} description={post.data.description}>
   <Navigation />
-  <div class="lg:pl-[240px]">
+  <div class="lg:pl-[260px]">
     <main class="max-w-3xl mx-auto px-8 py-16 lg:py-24">
       <article>
         <header class="mb-14">
-          <div class="flex items-center gap-4 mb-6">
+          <div class="flex items-center gap-3 mb-6">
             <a
               href={`${base}${categorySlug}`}
               class:list={[
-                "text-xs tracking-[0.2em] uppercase font-medium transition-colors duration-300",
+                "px-2.5 py-0.5 rounded-full text-[10px] tracking-[0.15em] uppercase font-medium border neon-link transition-all duration-300",
                 meta?.neonClass || 'text-[var(--color-text-muted)]'
               ]}
+              style={`border-color: ${meta?.borderColor || 'rgba(255,255,255,0.1)'};`}
             >
               {meta ? `${meta.cn} / ${meta.en}` : categorySlug}
             </a>
-            <span class="text-[var(--color-border)]">&middot;</span>
             <time
               datetime={post.data.date.toISOString()}
-              class="text-xs text-[var(--color-text-muted)] tracking-wider font-light"
+              class="text-[11px] text-[var(--color-text-muted)] tracking-wider font-light"
+              style="font-family: 'Orbitron', sans-serif;"
             >
               {post.data.date.toLocaleDateString('en-US', {
                 year: 'numeric',
-                month: 'long',
+                month: 'short',
                 day: 'numeric',
               })}
             </time>
           </div>
-          <h1 class="text-4xl lg:text-5xl font-medium leading-tight tracking-tight">{post.data.title}</h1>
+          <h1 class="text-3xl lg:text-4xl font-bold leading-tight tracking-tight" style="font-family: 'Orbitron', sans-serif;">{post.data.title}</h1>
           {post.data.description && (
-            <p class="mt-6 text-lg text-[var(--color-text-muted)] leading-relaxed font-light">{post.data.description}</p>
+            <p class="mt-6 text-base text-[var(--color-text-muted)] leading-relaxed font-light">{post.data.description}</p>
           )}
         </header>
-        <div class="prose-custom">
-          <Content />
+        <div class="content-panel p-6 lg:p-8">
+          <div class="prose-custom">
+            <Content />
+          </div>
         </div>
       </article>
-      <div class="mt-20 pt-10 border-t border-[var(--color-border)]">
+      <div class="mt-16 pt-8 border-t border-[var(--color-border)]">
         <a
           href={`${base}${categorySlug}`}
           class:list={[
-            "text-sm font-light tracking-wide transition-all duration-300 hover-back-link",
-            "text-[var(--color-text-muted)]"
+            "neon-link text-sm font-light tracking-wide transition-all duration-300",
+            "text-[var(--color-text-muted)]",
+            `hover:${meta?.neonClass}`
           ]}
           data-neon={meta?.neonClass}
         >
@@ -101,20 +105,22 @@ const meta = categoryMeta[categorySlug];
   }
 
   .prose-custom :global(h2) {
-    font-size: 1.75rem;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 600;
     margin-top: 3rem;
     margin-bottom: 1.25rem;
     color: var(--color-text);
     letter-spacing: -0.02em;
+    font-family: 'Orbitron', sans-serif;
   }
 
   .prose-custom :global(h3) {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     font-weight: 500;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
     color: var(--color-text);
+    font-family: 'Orbitron', sans-serif;
   }
 
   .prose-custom :global(blockquote) {
@@ -132,6 +138,7 @@ const meta = categoryMeta[categorySlug];
     border-radius: 0.375rem;
     font-size: 0.875rem;
     border: 1px solid var(--color-border);
+    color: var(--color-neon-cyan);
   }
 
   .prose-custom :global(pre) {
@@ -163,7 +170,7 @@ const meta = categoryMeta[categorySlug];
 </style>
 
 <script>
-  document.querySelectorAll('.hover-back-link').forEach((link) => {
+  document.querySelectorAll('[data-neon]').forEach((link) => {
     const el = link as HTMLElement;
     const neonClass = el.dataset.neon;
     if (neonClass) {

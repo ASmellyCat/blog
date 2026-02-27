@@ -7,14 +7,14 @@ import PostList from '../../components/PostList.astro';
 const posts = await getCollection('posts', ({ data }) => data.category === 'essays');
 ---
 
-<BaseLayout title="随笔 / Essays — blog">
+<BaseLayout title="随笔 / Essays — coconut的梦游仙境">
   <Navigation />
-  <div class="lg:pl-[240px]">
+  <div class="lg:pl-[260px]">
     <main class="max-w-3xl mx-auto px-8 py-16 lg:py-24">
       <header class="mb-16">
-        <h1 class="text-4xl font-medium tracking-tight mb-2 neon-green">随笔</h1>
-        <p class="text-sm tracking-widest uppercase text-[var(--color-text-muted)] font-light mb-4">Essays</p>
-        <p class="text-[var(--color-text-muted)] font-light">Diary entries.</p>
+        <h1 class="text-3xl font-bold tracking-tight mb-2 neon-green glow-green" style="font-family: 'Orbitron', sans-serif;">随笔</h1>
+        <p class="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] font-light mb-4" style="font-family: 'Orbitron', sans-serif;">Essays</p>
+        <p class="text-[var(--color-text-muted)] font-light text-sm">Diary entries.</p>
       </header>
       <PostList posts={posts} />
     </main>

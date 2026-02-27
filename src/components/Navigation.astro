@@ -11,17 +11,17 @@ const categories = [
 
 <!-- Mobile: horizontal scrollable row -->
 <nav class="lg:hidden sticky top-0 z-50 bg-[var(--color-bg)]/80 backdrop-blur-xl border-b border-[var(--color-border)]">
-  <div class="px-6 py-4 flex items-center gap-4">
-    <a href={base} class="text-sm font-medium tracking-widest uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] shrink-0">
-      blog
+  <div class="px-5 py-3 flex items-center gap-4">
+    <a href={base} class="shrink-0 neon-link" style="font-family: 'Orbitron', sans-serif;">
+      <span class="text-xs font-bold tracking-[0.2em] uppercase dream-subtitle">梦游仙境</span>
     </a>
-    <div class="flex gap-3 overflow-x-auto no-scrollbar">
+    <div class="flex gap-2 overflow-x-auto no-scrollbar">
       {categories.map((cat) => (
         <a
           href={cat.href}
           class:list={[
-            "nav-pill shrink-0 px-4 py-2 rounded-full text-xs tracking-wide",
-            "bg-white/5 backdrop-blur-md border border-white/10",
+            "nav-pill shrink-0 px-3 py-1.5 rounded-full text-[11px] tracking-wide",
+            "bg-white/[0.03] backdrop-blur-md border border-white/[0.08]",
             "text-[var(--color-text-muted)] transition-all duration-300"
           ]}
           data-neon={cat.neonClass}
@@ -29,55 +29,60 @@ const categories = [
           data-box-glow={cat.boxGlowClass}
           data-border-color={cat.borderColor}
         >
-          {cat.cn}<span class="mx-1 opacity-30">/</span>{cat.en}
+          {cat.cn}<span class="mx-0.5 opacity-30">/</span>{cat.en}
         </a>
       ))}
     </div>
   </div>
 </nav>
 
-<!-- Desktop: floating fixed sidebar -->
-<aside class="hidden lg:flex fixed left-0 top-0 h-screen w-[240px] flex-col justify-between z-50 p-8">
-  <div>
-    <a href={base} class="block mb-16">
-      <span class="text-sm font-medium tracking-[0.3em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300">blog</span>
-    </a>
-    <nav>
-      <ul class="space-y-4">
-        {categories.map((cat) => (
-          <li>
-            <a
-              href={cat.href}
-              class:list={[
-                "nav-pill group block px-5 py-4 rounded-2xl",
-                "bg-white/[0.03] backdrop-blur-md",
-                "border border-white/[0.06]",
-                "transition-all duration-300 ease-out"
-              ]}
-              data-neon={cat.neonClass}
-              data-glow={cat.glowClass}
-              data-box-glow={cat.boxGlowClass}
-              data-border-color={cat.borderColor}
-            >
-              <span class="block text-lg font-light tracking-wide text-[var(--color-text)] transition-all duration-300 nav-cn">
-                {cat.cn}
-              </span>
-              <span class="block text-xs tracking-widest uppercase text-[var(--color-text-muted)] mt-1 font-light transition-all duration-300 nav-en">
-                {cat.en}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </div>
-  <div>
-    <a
-      href={`${base}about`}
-      class="text-xs tracking-widest uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300 font-light"
-    >
-      About
-    </a>
+<!-- Desktop: floating fixed sidebar with animated border -->
+<aside class="hidden lg:block fixed left-4 top-4 bottom-4 w-[240px] z-50 animated-border rounded-2xl">
+  <div class="h-full flex flex-col justify-between p-7 bg-[var(--color-bg)]/90 backdrop-blur-xl rounded-2xl">
+    <div>
+      <!-- Blog title in sidebar -->
+      <a href={base} class="block mb-12 group">
+        <span class="block text-sm font-bold tracking-[0.15em] uppercase dream-subtitle" style="font-family: 'Orbitron', sans-serif;">coconut的</span>
+        <span class="block text-sm font-bold tracking-[0.15em] uppercase dream-subtitle mt-0.5" style="font-family: 'Orbitron', sans-serif;">梦游仙境</span>
+      </a>
+      <nav>
+        <ul class="space-y-3">
+          {categories.map((cat) => (
+            <li>
+              <a
+                href={cat.href}
+                class:list={[
+                  "nav-pill group block px-4 py-3 rounded-xl",
+                  "bg-white/[0.03] backdrop-blur-md",
+                  "border border-white/[0.06]",
+                  "transition-all duration-300 ease-out"
+                ]}
+                data-neon={cat.neonClass}
+                data-glow={cat.glowClass}
+                data-box-glow={cat.boxGlowClass}
+                data-border-color={cat.borderColor}
+              >
+                <span class="block text-base font-light tracking-wide text-[var(--color-text)] transition-all duration-300 nav-cn">
+                  {cat.cn}
+                </span>
+                <span class="block text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mt-0.5 font-light transition-all duration-300 nav-en" style="font-family: 'Orbitron', sans-serif;">
+                  {cat.en}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+    <div>
+      <a
+        href={`${base}about`}
+        class="neon-link text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300 font-light"
+        style="font-family: 'Orbitron', sans-serif;"
+      >
+        About
+      </a>
+    </div>
   </div>
 </aside>
 
@@ -99,7 +104,6 @@ const categories = [
       const en = el.querySelector('.nav-en');
       if (cn) { cn.classList.add(neonClass, glowClass); }
       if (en) { en.classList.add(neonClass, glowClass); }
-      // For mobile pills without sub-elements
       if (!cn && !en) { el.classList.add(neonClass, glowClass); }
       el.classList.add(boxGlowClass);
       el.style.borderColor = borderColor;

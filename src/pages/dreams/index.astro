@@ -7,14 +7,14 @@ import PostList from '../../components/PostList.astro';
 const posts = await getCollection('posts', ({ data }) => data.category === 'dreams');
 ---
 
-<BaseLayout title="梦境 / Dreams — blog">
+<BaseLayout title="梦境 / Dreams — coconut的梦游仙境">
   <Navigation />
-  <div class="lg:pl-[240px]">
+  <div class="lg:pl-[260px]">
     <main class="max-w-3xl mx-auto px-8 py-16 lg:py-24">
       <header class="mb-16">
-        <h1 class="text-4xl font-medium tracking-tight mb-2 neon-purple">梦境</h1>
-        <p class="text-sm tracking-widest uppercase text-[var(--color-text-muted)] font-light mb-4">Dreams</p>
-        <p class="text-[var(--color-text-muted)] font-light">Dreams.</p>
+        <h1 class="text-3xl font-bold tracking-tight mb-2 neon-purple glow-purple" style="font-family: 'Orbitron', sans-serif;">梦境</h1>
+        <p class="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] font-light mb-4" style="font-family: 'Orbitron', sans-serif;">Dreams</p>
+        <p class="text-[var(--color-text-muted)] font-light text-sm">Dreams.</p>
       </header>
       <PostList posts={posts} />
     </main>
