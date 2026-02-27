@@ -2,60 +2,117 @@
 const base = import.meta.env.BASE_URL;
 
 const categories = [
-  { cn: '故事', en: 'Stories', href: `${base}stories` },
-  { cn: '心情', en: 'Feelings', href: `${base}feelings` },
-  { cn: '随笔', en: 'Essays', href: `${base}essays` },
-  { cn: '梦境', en: 'Dreams', href: `${base}dreams` },
+  { cn: '故事', en: 'Stories', href: `${base}stories`, neonClass: 'neon-cyan', glowClass: 'glow-cyan', boxGlowClass: 'box-glow-cyan', borderColor: 'rgba(0, 240, 255, 0.3)' },
+  { cn: '心情', en: 'Feelings', href: `${base}feelings`, neonClass: 'neon-pink', glowClass: 'glow-pink', boxGlowClass: 'box-glow-pink', borderColor: 'rgba(255, 45, 120, 0.3)' },
+  { cn: '随笔', en: 'Essays', href: `${base}essays`, neonClass: 'neon-green', glowClass: 'glow-green', boxGlowClass: 'box-glow-green', borderColor: 'rgba(57, 255, 20, 0.3)' },
+  { cn: '梦境', en: 'Dreams', href: `${base}dreams`, neonClass: 'neon-purple', glowClass: 'glow-purple', boxGlowClass: 'box-glow-purple', borderColor: 'rgba(191, 64, 255, 0.3)' },
 ];
 ---
 
-<header class="border-b border-[var(--color-border)]">
-  <nav class="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
-    <a href={base} class="font-serif text-xl font-semibold tracking-tight hover:text-[var(--color-accent)] transition-colors">
+<!-- Mobile: horizontal scrollable row -->
+<nav class="lg:hidden sticky top-0 z-50 bg-[var(--color-bg)]/80 backdrop-blur-xl border-b border-[var(--color-border)]">
+  <div class="px-6 py-4 flex items-center gap-4">
+    <a href={base} class="text-sm font-medium tracking-widest uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] shrink-0">
       blog
     </a>
-    <button
-      id="menu-toggle"
-      class="md:hidden p-2 -mr-2 text-[var(--color-text-muted)] hover:text-[var(--color-accent)]"
-      aria-label="Toggle menu"
-    >
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-        <line x1="3" y1="6" x2="17" y2="6" />
-        <line x1="3" y1="10" x2="17" y2="10" />
-        <line x1="3" y1="14" x2="17" y2="14" />
-      </svg>
-    </button>
-    <div id="nav-links" class="hidden md:flex items-center gap-8">
+    <div class="flex gap-3 overflow-x-auto no-scrollbar">
       {categories.map((cat) => (
         <a
           href={cat.href}
-          class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors tracking-wide"
+          class:list={[
+            "nav-pill shrink-0 px-4 py-2 rounded-full text-xs tracking-wide",
+            "bg-white/5 backdrop-blur-md border border-white/10",
+            "text-[var(--color-text-muted)] transition-all duration-300"
+          ]}
+          data-neon={cat.neonClass}
+          data-glow={cat.glowClass}
+          data-box-glow={cat.boxGlowClass}
+          data-border-color={cat.borderColor}
         >
-          <span>{cat.cn}</span>
-          <span class="mx-1 text-[var(--color-border)]">/</span>
-          <span>{cat.en}</span>
-        </a>
-      ))}
-    </div>
-  </nav>
-  <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--color-border)]">
-    <div class="max-w-5xl mx-auto px-6 py-4 flex flex-col gap-4">
-      {categories.map((cat) => (
-        <a
-          href={cat.href}
-          class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors"
-        >
-          {cat.cn} / {cat.en}
+          {cat.cn}<span class="mx-1 opacity-30">/</span>{cat.en}
         </a>
       ))}
     </div>
   </div>
-</header>
+</nav>
+
+<!-- Desktop: floating fixed sidebar -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-screen w-[240px] flex-col justify-between z-50 p-8">
+  <div>
+    <a href={base} class="block mb-16">
+      <span class="text-sm font-medium tracking-[0.3em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300">blog</span>
+    </a>
+    <nav>
+      <ul class="space-y-4">
+        {categories.map((cat) => (
+          <li>
+            <a
+              href={cat.href}
+              class:list={[
+                "nav-pill group block px-5 py-4 rounded-2xl",
+                "bg-white/[0.03] backdrop-blur-md",
+                "border border-white/[0.06]",
+                "transition-all duration-300 ease-out"
+              ]}
+              data-neon={cat.neonClass}
+              data-glow={cat.glowClass}
+              data-box-glow={cat.boxGlowClass}
+              data-border-color={cat.borderColor}
+            >
+              <span class="block text-lg font-light tracking-wide text-[var(--color-text)] transition-all duration-300 nav-cn">
+                {cat.cn}
+              </span>
+              <span class="block text-xs tracking-widest uppercase text-[var(--color-text-muted)] mt-1 font-light transition-all duration-300 nav-en">
+                {cat.en}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+  <div>
+    <a
+      href={`${base}about`}
+      class="text-xs tracking-widest uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300 font-light"
+    >
+      About
+    </a>
+  </div>
+</aside>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
 
 <script>
-  const toggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-  toggle?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+  document.querySelectorAll('.nav-pill').forEach((pill) => {
+    const el = pill as HTMLElement;
+    const neonClass = el.dataset.neon!;
+    const glowClass = el.dataset.glow!;
+    const boxGlowClass = el.dataset.boxGlow!;
+    const borderColor = el.dataset.borderColor!;
+
+    el.addEventListener('mouseenter', () => {
+      const cn = el.querySelector('.nav-cn');
+      const en = el.querySelector('.nav-en');
+      if (cn) { cn.classList.add(neonClass, glowClass); }
+      if (en) { en.classList.add(neonClass, glowClass); }
+      // For mobile pills without sub-elements
+      if (!cn && !en) { el.classList.add(neonClass, glowClass); }
+      el.classList.add(boxGlowClass);
+      el.style.borderColor = borderColor;
+    });
+
+    el.addEventListener('mouseleave', () => {
+      const cn = el.querySelector('.nav-cn');
+      const en = el.querySelector('.nav-en');
+      if (cn) { cn.classList.remove(neonClass, glowClass); }
+      if (en) { en.classList.remove(neonClass, glowClass); }
+      if (!cn && !en) { el.classList.remove(neonClass, glowClass); }
+      el.classList.remove(boxGlowClass);
+      el.style.borderColor = '';
+    });
   });
 </script>

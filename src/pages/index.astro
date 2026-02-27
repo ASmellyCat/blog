@@ -1,44 +1,20 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
 import PostList from '../components/PostList.astro';
 
 const posts = await getCollection('posts');
-const base = import.meta.env.BASE_URL;
-
-const categories = [
-  { cn: '故事', en: 'Stories', slug: 'stories', desc: 'Ideas and inspirations' },
-  { cn: '心情', en: 'Feelings', slug: 'feelings', desc: 'Short thoughts' },
-  { cn: '随笔', en: 'Essays', slug: 'essays', desc: 'Diary entries' },
-  { cn: '梦境', en: 'Dreams', slug: 'dreams', desc: 'Dreams' },
-];
 ---
 
 <BaseLayout title="blog">
-  <div class="max-w-5xl mx-auto px-6 py-12 lg:flex lg:gap-16">
-    <!-- Sidebar -->
-    <aside class="lg:w-48 shrink-0 mb-12 lg:mb-0 lg:pt-2">
-      <h1 class="font-serif text-3xl font-bold mb-1">blog</h1>
-      <p class="text-sm text-[var(--color-text-muted)] mb-8 leading-relaxed">Recent writing.</p>
-      <nav class="hidden lg:block">
-        <ul class="space-y-4">
-          {categories.map((cat) => (
-            <li>
-              <a
-                href={`${base}${cat.slug}`}
-                class="group block text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors"
-              >
-                <span class="font-medium text-[var(--color-text)] group-hover:text-[var(--color-accent)]">{cat.cn}</span>
-                <span class="mx-1 text-[var(--color-border)]">/</span>
-                <span>{cat.en}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </aside>
-    <!-- Main content -->
-    <main class="flex-1 min-w-0">
+  <Navigation />
+  <div class="lg:pl-[240px]">
+    <main class="max-w-3xl mx-auto px-8 py-16 lg:py-24">
+      <header class="mb-16">
+        <h1 class="text-4xl font-medium tracking-tight mb-3">blog</h1>
+        <p class="text-[var(--color-text-muted)] font-light tracking-wide">Recent writing.</p>
+      </header>
       <PostList posts={posts} />
     </main>
   </div>

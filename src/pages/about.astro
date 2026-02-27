@@ -1,23 +1,25 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
 ---
 
 <BaseLayout title="About — blog">
-  <div class="max-w-5xl mx-auto px-6 py-12 lg:flex lg:gap-16">
-    <aside class="lg:w-48 shrink-0 mb-8 lg:mb-0 lg:pt-2">
-      <h1 class="font-serif text-3xl font-bold">About</h1>
-    </aside>
-    <main class="flex-1 min-w-0">
-      <div class="max-w-xl">
-        <p class="text-lg leading-relaxed text-[var(--color-text-muted)]">
+  <Navigation />
+  <div class="lg:pl-[240px]">
+    <main class="max-w-3xl mx-auto px-8 py-16 lg:py-24">
+      <header class="mb-16">
+        <h1 class="text-4xl font-medium tracking-tight">About</h1>
+      </header>
+      <div class="max-w-xl space-y-8">
+        <p class="text-lg leading-relaxed text-[var(--color-text-muted)] font-light">
           A quiet corner of the internet for stories, thoughts, diary entries, and dreams.
         </p>
-        <p class="mt-6 text-[var(--color-text-muted)] leading-relaxed">
+        <p class="text-[var(--color-text-muted)] leading-relaxed font-light">
           This is a personal blog. The writing here is organized into four categories:
-          <strong class="text-[var(--color-text)] font-medium">故事 / Stories</strong> for ideas and inspirations,
-          <strong class="text-[var(--color-text)] font-medium">心情 / Feelings</strong> for short thoughts,
-          <strong class="text-[var(--color-text)] font-medium">随笔 / Essays</strong> for diary entries, and
-          <strong class="text-[var(--color-text)] font-medium">梦境 / Dreams</strong> for dreams.
+          <strong class="font-medium neon-cyan">故事 / Stories</strong> for ideas and inspirations,
+          <strong class="font-medium neon-pink">心情 / Feelings</strong> for short thoughts,
+          <strong class="font-medium neon-green">随笔 / Essays</strong> for diary entries, and
+          <strong class="font-medium neon-purple">梦境 / Dreams</strong> for dreams.
         </p>
       </div>
     </main>

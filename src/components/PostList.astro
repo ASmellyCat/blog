@@ -16,11 +16,11 @@ interface Props {
 const { posts } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
-const categoryLabels: Record<string, { cn: string; en: string }> = {
-  stories: { cn: '故事', en: 'Stories' },
-  feelings: { cn: '心情', en: 'Feelings' },
-  essays: { cn: '随笔', en: 'Essays' },
-  dreams: { cn: '梦境', en: 'Dreams' },
+const categoryMeta: Record<string, { cn: string; en: string; neonClass: string; glowClass: string }> = {
+  stories: { cn: '故事', en: 'Stories', neonClass: 'neon-cyan', glowClass: 'glow-cyan' },
+  feelings: { cn: '心情', en: 'Feelings', neonClass: 'neon-pink', glowClass: 'glow-pink' },
+  essays: { cn: '随笔', en: 'Essays', neonClass: 'neon-green', glowClass: 'glow-green' },
+  dreams: { cn: '梦境', en: 'Dreams', neonClass: 'neon-purple', glowClass: 'glow-purple' },
 };
 
 const sorted = posts.sort(
@@ -28,20 +28,27 @@ const sorted = posts.sort(
 );
 ---
 
-<ul class="space-y-0 divide-y divide-[var(--color-border)]">
+<ul class="space-y-0">
   {sorted.map((post) => {
-    const label = categoryLabels[post.data.category];
+    const meta = categoryMeta[post.data.category];
     return (
       <li>
-        <a href={`${base}posts/${post.id}`} class="group block py-8 first:pt-0">
-          <div class="flex items-center gap-3 mb-3">
-            <span class="text-xs uppercase tracking-widest text-[var(--color-accent)] font-medium">
-              {label ? `${label.cn} / ${label.en}` : post.data.category}
+        <a
+          href={`${base}posts/${post.id}`}
+          class="post-link group block py-10 border-b border-[var(--color-border)] transition-all duration-300"
+          data-glow-class={meta?.glowClass}
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <span class:list={[
+              "text-xs tracking-[0.2em] uppercase font-medium",
+              meta?.neonClass || 'text-[var(--color-text-muted)]'
+            ]}>
+              {meta ? `${meta.cn} / ${meta.en}` : post.data.category}
             </span>
             <span class="text-[var(--color-border)]">&middot;</span>
             <time
               datetime={post.data.date.toISOString()}
-              class="text-xs text-[var(--color-text-muted)] tracking-wide"
+              class="text-xs text-[var(--color-text-muted)] tracking-wider font-light"
             >
               {post.data.date.toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -50,11 +57,11 @@ const sorted = posts.sort(
               })}
             </time>
           </div>
-          <h3 class="font-serif text-2xl font-semibold leading-snug group-hover:text-[var(--color-accent)] transition-colors">
+          <h3 class="post-title text-3xl font-medium leading-snug tracking-tight transition-all duration-300">
             {post.data.title}
           </h3>
           {post.data.description && (
-            <p class="mt-3 text-[var(--color-text-muted)] leading-relaxed">
+            <p class="mt-4 text-[var(--color-text-muted)] leading-relaxed font-light text-base">
               {post.data.description}
             </p>
           )}
@@ -63,3 +70,20 @@ const sorted = posts.sort(
     );
   })}
 </ul>
+
+<script>
+  document.querySelectorAll('.post-link').forEach((link) => {
+    const el = link as HTMLElement;
+    const glowClass = el.dataset.glowClass;
+    const title = el.querySelector('.post-title');
+
+    if (glowClass && title) {
+      el.addEventListener('mouseenter', () => {
+        title.classList.add(glowClass);
+      });
+      el.addEventListener('mouseleave', () => {
+        title.classList.remove(glowClass);
+      });
+    }
+  });
+</script>

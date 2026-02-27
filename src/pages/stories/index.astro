@@ -1,19 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
 import PostList from '../../components/PostList.astro';
 
 const posts = await getCollection('posts', ({ data }) => data.category === 'stories');
 ---
 
 <BaseLayout title="故事 / Stories — blog">
-  <div class="max-w-5xl mx-auto px-6 py-12 lg:flex lg:gap-16">
-    <aside class="lg:w-48 shrink-0 mb-8 lg:mb-0 lg:pt-2">
-      <h1 class="font-serif text-3xl font-bold mb-1">故事</h1>
-      <p class="text-sm text-[var(--color-text-muted)]">Stories</p>
-      <p class="mt-4 text-sm text-[var(--color-text-muted)] leading-relaxed">Ideas and inspirations.</p>
-    </aside>
-    <main class="flex-1 min-w-0">
+  <Navigation />
+  <div class="lg:pl-[240px]">
+    <main class="max-w-3xl mx-auto px-8 py-16 lg:py-24">
+      <header class="mb-16">
+        <h1 class="text-4xl font-medium tracking-tight mb-2 neon-cyan">故事</h1>
+        <p class="text-sm tracking-widest uppercase text-[var(--color-text-muted)] font-light mb-4">Stories</p>
+        <p class="text-[var(--color-text-muted)] font-light">Ideas and inspirations.</p>
+      </header>
       <PostList posts={posts} />
     </main>
   </div>
