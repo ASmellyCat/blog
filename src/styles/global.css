@@ -442,3 +442,21 @@ h1, h2, h3 {
   filter: brightness(1) saturate(1);
   transition: opacity 0.4s ease, transform 0.4s ease, filter 0.6s ease;
 }
+
+/* ============================================
+   CJK Title Styling - Cyberpunk
+   ============================================ */
+
+/* Override Orbitron fallback for CJK characters */
+h1[style*="Orbitron"],
+h3[style*="Orbitron"],
+.post-title {
+  font-family: 'Orbitron', 'ZCOOL QingKe HuangYou', sans-serif !important;
+}
+
+/* Detect CJK titles and apply special styling */
+@supports (font-family: 'ZCOOL QingKe HuangYou') {
+  h1, h3.post-title {
+    text-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+  }
+}
