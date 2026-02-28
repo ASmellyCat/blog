@@ -360,3 +360,85 @@ a {
 h1, h2, h3 {
   font-family: var(--font-display);
 }
+
+/* ============================================
+   Cyberpunk Page Transitions
+   ============================================ */
+
+.page-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-bg, #050510);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.page-transition.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.transition-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.8), transparent);
+  animation: transition-scan 0.5s ease-out;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.5), 0 0 60px rgba(0, 240, 255, 0.2);
+}
+
+.page-transition.active .transition-scanline {
+  animation: transition-scan 0.5s ease-out forwards;
+}
+
+@keyframes transition-scan {
+  0% { top: 0; opacity: 1; }
+  100% { top: 100%; opacity: 0.5; }
+}
+
+.transition-glitch-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: rgba(0, 240, 255, 0.6);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+  animation: glitch-flicker 0.15s infinite;
+  opacity: 0;
+}
+
+.page-transition.active .transition-glitch-text {
+  opacity: 1;
+}
+
+@keyframes glitch-flicker {
+  0%, 100% { opacity: 1; transform: translate(0); }
+  20% { opacity: 0.8; transform: translate(-2px, 1px); }
+  40% { opacity: 1; transform: translate(1px, -1px); }
+  60% { opacity: 0.6; transform: translate(-1px, 0); }
+  80% { opacity: 1; transform: translate(2px, 1px); }
+}
+
+/* Page enter animation */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: brightness(1.5) saturate(0.5);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  filter: brightness(1) saturate(1);
+  transition: opacity 0.4s ease, transform 0.4s ease, filter 0.6s ease;
+}

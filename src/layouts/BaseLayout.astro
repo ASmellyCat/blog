@@ -76,5 +76,47 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
         });
       }
     </script>
+  
+    <!-- Cyberpunk page transition -->
+    <div id="pageTransition" class="page-transition" aria-hidden="true">
+      <div class="transition-scanline"></div>
+      <div class="transition-glitch-text" id="transitionText">LOADING</div>
+    </div>
+
+    <!-- Page transition script -->
+    <script>
+      // Page enter animation
+      document.addEventListener('DOMContentLoaded', () => {
+        const content = document.querySelector('.relative.z-10');
+        if (content) {
+          content.classList.add('page-enter');
+          requestAnimationFrame(() => {
+            content.classList.add('page-enter-active');
+          });
+        }
+      });
+
+      // Intercept link clicks for transition
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link) return;
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+        
+        e.preventDefault();
+        const overlay = document.getElementById('pageTransition');
+        const text = document.getElementById('transitionText');
+        
+        // Random cyber words
+        const words = ['LOADING', 'ACCESSING', 'DECRYPTING', 'CONNECTING', 'SYNCING', 'ENTERING'];
+        text.textContent = words[Math.floor(Math.random() * words.length)];
+        
+        overlay.classList.add('active');
+        
+        setTimeout(() => {
+          window.location.href = href;
+        }, 500);
+      });
+    </script>
   </body>
 </html>
