@@ -24,6 +24,24 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Orbitron:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@100;300;500;900&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
+    <!-- Cyberpunk Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+      <div class="splash-content">
+        <div class="splash-glitch" data-text="COCONUT的">COCONUT的</div>
+        <div class="splash-subtitle">梦游仙境</div>
+        <div class="splash-line"></div>
+        <div class="splash-status">
+          <span id="splashStatus">INITIALIZING SYSTEM</span>
+          <span class="splash-cursor">_</span>
+        </div>
+        <button id="splashEnter" class="splash-enter">
+          <span class="splash-enter-text">ENTER</span>
+          <span class="splash-enter-sub">按任意键进入</span>
+        </button>
+      </div>
+      <div class="splash-scanlines"></div>
+    </div>
+
     <!-- Animated cyberpunk background -->
     <div class="cyber-bg" aria-hidden="true">
       <div class="cyber-bg__image"></div>
@@ -123,6 +141,78 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
           window.location.href = href;
         }, 500);
       });
+    </script>
+  
+    <!-- Splash screen script -->
+    <script>
+      (function() {
+        // Only show splash once per session
+        if (sessionStorage.getItem('splash_done')) {
+          const s = document.getElementById('splashScreen');
+          if (s) s.remove();
+          return;
+        }
+
+        const splash = document.getElementById('splashScreen');
+        const statusEl = document.getElementById('splashStatus');
+        const enterBtn = document.getElementById('splashEnter');
+        if (!splash) return;
+
+        // Prevent scrolling
+        document.body.style.overflow = 'hidden';
+
+        // Boot sequence messages
+        const messages = [
+          'INITIALIZING SYSTEM',
+          'LOADING NEURAL INTERFACE',
+          'CONNECTING TO DREAMSCAPE',
+          'DECRYPTING MEMORIES',
+          'SYNCING CONSCIOUSNESS',
+          'SYSTEM READY'
+        ];
+
+        let msgIndex = 0;
+        const msgInterval = setInterval(() => {
+          msgIndex++;
+          if (msgIndex < messages.length) {
+            if (statusEl) statusEl.textContent = messages[msgIndex];
+          }
+          if (msgIndex >= messages.length - 1) {
+            clearInterval(msgInterval);
+            if (enterBtn) enterBtn.classList.add('visible');
+          }
+        }, 500);
+
+        function enter() {
+          sessionStorage.setItem('splash_done', '1');
+          splash.classList.add('fade-out');
+          document.body.style.overflow = '';
+          
+          // Try to autoplay music
+          const audio = document.getElementById('audioPlayer');
+          if (audio) {
+            audio.play().then(() => {
+              // Update play button
+              const pb = document.getElementById('playPause');
+              const pbm = document.getElementById('playPauseMobile');
+              if (pb) pb.textContent = '⏸';
+              if (pbm) pbm.textContent = '⏸';
+              const player = document.querySelector('.music-player');
+              if (player) player.classList.add('playing');
+            }).catch(() => {});
+          }
+
+          setTimeout(() => splash.remove(), 800);
+        }
+
+        if (enterBtn) enterBtn.addEventListener('click', enter);
+        document.addEventListener('keydown', function handler(e) {
+          if (enterBtn && enterBtn.classList.contains('visible')) {
+            enter();
+            document.removeEventListener('keydown', handler);
+          }
+        });
+      })();
     </script>
   </body>
 </html>
