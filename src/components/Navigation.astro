@@ -35,28 +35,6 @@ const categories = [
     </div>
   </div>
 
-      <!-- Cyberpunk Music Player -->
-      <div class="music-player mt-8 mx-4">
-        <div class="music-player__container">
-          <div class="music-player__visualizer" id="visualizer">
-            <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
-            <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
-            <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
-          </div>
-          <div class="music-player__info">
-            <div class="music-player__title" id="trackTitle">—</div>
-            <div class="music-player__progress">
-              <div class="music-player__progress-bar" id="progressBar"></div>
-            </div>
-          </div>
-          <div class="music-player__controls">
-            <button id="prevTrack" class="music-ctrl" title="Previous">⟨</button>
-            <button id="playPause" class="music-ctrl music-ctrl--play" title="Play">▶</button>
-            <button id="nextTrack" class="music-ctrl" title="Next">⟩</button>
-          </div>
-        </div>
-        <audio id="audioPlayer" preload="auto"></audio>
-      </div>
     </nav>
 
 <!-- Desktop: floating fixed sidebar with animated border -->
@@ -96,6 +74,28 @@ const categories = [
           ))}
         </ul>
       </nav>
+      <!-- Music Player -->
+      <div class="music-player mt-6">
+        <div class="music-player__container">
+          <div class="music-player__visualizer" id="visualizer">
+            <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
+            <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
+            <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
+          </div>
+          <div class="music-player__info">
+            <div class="music-player__title" id="trackTitle">—</div>
+            <div class="music-player__progress">
+              <div class="music-player__progress-bar" id="progressBar"></div>
+            </div>
+          </div>
+          <div class="music-player__controls">
+            <button id="prevTrack" class="music-ctrl" title="Previous">⟨</button>
+            <button id="playPause" class="music-ctrl music-ctrl--play" title="Play">▶</button>
+            <button id="nextTrack" class="music-ctrl" title="Next">⟩</button>
+          </div>
+        </div>
+        <audio id="audioPlayer" preload="auto"></audio>
+      </div>
     </div>
     <div>
       <a
@@ -108,6 +108,25 @@ const categories = [
     </div>
   </div>
 </aside>
+
+<!-- Mobile Music Player - fixed bottom -->
+<div class="music-player-mobile lg:hidden fixed bottom-0 left-0 right-0 z-40">
+  <div class="bg-[var(--color-bg)]/95 backdrop-blur-xl border-t border-[var(--color-border)] px-4 py-2">
+    <div class="flex items-center gap-3">
+      <button id="playPauseMobile" class="music-ctrl music-ctrl--play text-xs w-8 h-8 shrink-0" title="Play">▶</button>
+      <div class="flex-1 min-w-0">
+        <div class="text-[9px] tracking-[0.15em] text-[var(--color-text-muted)] truncate" id="trackTitleMobile" style="font-family: 'Orbitron', sans-serif;">—</div>
+        <div class="music-player__progress mt-1">
+          <div class="music-player__progress-bar" id="progressBarMobile"></div>
+        </div>
+      </div>
+      <div class="flex gap-1 shrink-0">
+        <button id="prevTrackMobile" class="music-ctrl text-xs px-1">⟨</button>
+        <button id="nextTrackMobile" class="music-ctrl text-xs px-1">⟩</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <style>
   .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -146,7 +165,7 @@ const categories = [
 
 
 <script>
-  // Music Player
+  // Music Player - handles both desktop and mobile
   const tracks = [
     { title: 'LOOSE', src: '/blog/music/loose.mp3' },
     { title: 'LO QUE SIENTO', src: '/blog/music/lo-que-siento.mp3' },
@@ -155,16 +174,33 @@ const categories = [
   let currentTrack = 0;
   let isPlaying = false;
   const audio = document.getElementById('audioPlayer');
+  
+  // Desktop elements
   const playBtn = document.getElementById('playPause');
   const titleEl = document.getElementById('trackTitle');
   const progressBar = document.getElementById('progressBar');
   const playerEl = document.querySelector('.music-player');
+  
+  // Mobile elements
+  const playBtnM = document.getElementById('playPauseMobile');
+  const titleElM = document.getElementById('trackTitleMobile');
+  const progressBarM = document.getElementById('progressBarMobile');
+  const playerElM = document.querySelector('.music-player-mobile');
 
   function loadTrack(index) {
     if (!audio || !tracks[index]) return;
     currentTrack = index;
     audio.src = tracks[index].src;
     if (titleEl) titleEl.textContent = tracks[index].title;
+    if (titleElM) titleElM.textContent = tracks[index].title;
+  }
+
+  function syncUI() {
+    const icon = isPlaying ? '⏸' : '▶';
+    if (playBtn) playBtn.textContent = icon;
+    if (playBtnM) playBtnM.textContent = icon;
+    if (playerEl) playerEl.classList.toggle('playing', isPlaying);
+    if (playerElM) playerElM.classList.toggle('playing', isPlaying);
   }
 
   function togglePlay() {
@@ -172,23 +208,20 @@ const categories = [
     if (isPlaying) {
       audio.pause();
       isPlaying = false;
-      if (playBtn) playBtn.textContent = '▶';
-      if (playerEl) playerEl.classList.remove('playing');
     } else {
-      audio.play().then(() => {
-        isPlaying = true;
-        if (playBtn) playBtn.textContent = '⏸';
-        if (playerEl) playerEl.classList.add('playing');
-      }).catch(() => {});
+      audio.play().then(() => { isPlaying = true; }).catch(() => {});
     }
+    syncUI();
   }
 
   if (audio) {
     loadTrack(0);
 
     audio.addEventListener('timeupdate', () => {
-      if (audio.duration && progressBar) {
-        progressBar.style.width = (audio.currentTime / audio.duration * 100) + '%';
+      if (audio.duration) {
+        const pct = (audio.currentTime / audio.duration * 100) + '%';
+        if (progressBar) progressBar.style.width = pct;
+        if (progressBarM) progressBarM.style.width = pct;
       }
     });
 
@@ -198,29 +231,40 @@ const categories = [
       audio.play().catch(() => {});
     });
 
-    // Progress click
-    const progressContainer = document.querySelector('.music-player__progress');
-    if (progressContainer) {
-      progressContainer.addEventListener('click', (e) => {
-        const rect = progressContainer.getBoundingClientRect();
-        const pct = (e.clientX - rect.left) / rect.width;
-        if (audio.duration) audio.currentTime = pct * audio.duration;
-      });
-    }
+    audio.addEventListener('play', () => { isPlaying = true; syncUI(); });
+    audio.addEventListener('pause', () => { isPlaying = false; syncUI(); });
   }
 
+  // Desktop controls
   if (playBtn) playBtn.addEventListener('click', togglePlay);
-  
-  const prevBtn = document.getElementById('prevTrack');
-  const nextBtn = document.getElementById('nextTrack');
-  if (prevBtn) prevBtn.addEventListener('click', () => {
+  document.getElementById('prevTrack')?.addEventListener('click', () => {
     currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
     loadTrack(currentTrack);
     if (isPlaying) audio.play().catch(() => {});
   });
-  if (nextBtn) nextBtn.addEventListener('click', () => {
+  document.getElementById('nextTrack')?.addEventListener('click', () => {
     currentTrack = (currentTrack + 1) % tracks.length;
     loadTrack(currentTrack);
     if (isPlaying) audio.play().catch(() => {});
+  });
+
+  // Mobile controls
+  if (playBtnM) playBtnM.addEventListener('click', togglePlay);
+  document.getElementById('prevTrackMobile')?.addEventListener('click', () => {
+    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+    loadTrack(currentTrack);
+    if (isPlaying) audio.play().catch(() => {});
+  });
+  document.getElementById('nextTrackMobile')?.addEventListener('click', () => {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    loadTrack(currentTrack);
+    if (isPlaying) audio.play().catch(() => {});
+  });
+
+  // Progress click (desktop)
+  document.querySelector('.music-player .music-player__progress')?.addEventListener('click', (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    if (audio?.duration) audio.currentTime = pct * audio.duration;
   });
 </script>
