@@ -120,7 +120,74 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
         if (overlay) overlay.classList.remove('active');
       });
 
-      // Intercept link clicks for transition
+      // SPA-style navigation - no page reload, music keeps playing
+      async function spaNavigate(href) {
+        const overlay = document.getElementById('pageTransition');
+        const text = document.getElementById('transitionText');
+        const words = ['LOADING', 'ACCESSING', 'DECRYPTING', 'CONNECTING', 'SYNCING', 'ENTERING'];
+        if (text) text.textContent = words[Math.floor(Math.random() * words.length)];
+        if (overlay) overlay.classList.add('active');
+
+        try {
+          const resp = await fetch(href);
+          const html = await resp.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          // Swap main content (everything inside .relative.z-10 except footer)
+          const newContent = doc.querySelector('.relative.z-10');
+          const oldContent = document.querySelector('.relative.z-10');
+          if (newContent && oldContent) {
+            oldContent.innerHTML = newContent.innerHTML;
+          }
+
+          // Update title
+          document.title = doc.title;
+
+          // Update URL
+          history.pushState({}, '', href);
+
+          // Re-run any inline scripts in new content
+          oldContent?.querySelectorAll('script').forEach(oldScript => {
+            const newScript = document.createElement('script');
+            if (oldScript.src) {
+              newScript.src = oldScript.src;
+            } else {
+              newScript.textContent = oldScript.textContent;
+            }
+            oldScript.replaceWith(newScript);
+          });
+
+          // Scroll to top
+          window.scrollTo(0, 0);
+
+        } catch (err) {
+          // Fallback to normal navigation
+          window.location.href = href;
+          return;
+        }
+
+        // Fade out overlay
+        setTimeout(() => {
+          if (overlay) overlay.classList.remove('active');
+          // Page enter animation
+          const content = document.querySelector('.relative.z-10');
+          if (content) {
+            content.classList.remove('page-enter-active');
+            content.classList.add('page-enter');
+            requestAnimationFrame(() => {
+              content.classList.add('page-enter-active');
+            });
+          }
+        }, 300);
+      }
+
+      // Handle back/forward
+      window.addEventListener('popstate', () => {
+        spaNavigate(location.href);
+      });
+
+      // Intercept link clicks
       document.addEventListener('click', (e) => {
         const link = e.target.closest('a');
         if (!link) return;
@@ -128,18 +195,7 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
         if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
         
         e.preventDefault();
-        const overlay = document.getElementById('pageTransition');
-        const text = document.getElementById('transitionText');
-        
-        // Random cyber words
-        const words = ['LOADING', 'ACCESSING', 'DECRYPTING', 'CONNECTING', 'SYNCING', 'ENTERING'];
-        text.textContent = words[Math.floor(Math.random() * words.length)];
-        
-        overlay.classList.add('active');
-        
-        setTimeout(() => {
-          window.location.href = href;
-        }, 500);
+        spaNavigate(href);
       });
     </script>
   
