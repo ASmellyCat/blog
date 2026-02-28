@@ -24,6 +24,7 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Orbitron:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@100;300;500;900&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
+    <audio id="persistentAudio" preload="auto" style="display:none;"></audio>
     <!-- Cyberpunk Splash Screen -->
     <div id="splashScreen" class="splash-screen">
       <div class="splash-content">
@@ -147,6 +148,9 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
           // Update URL
           history.pushState({}, '', href);
 
+          // Re-bind music player UI
+          if (window.__musicRebind) window.__musicRebind();
+
           // Re-run any inline scripts in new content
           oldContent?.querySelectorAll('script').forEach(oldScript => {
             const newScript = document.createElement('script');
@@ -245,7 +249,7 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
           document.body.style.overflow = '';
           
           // Try to autoplay music
-          const audio = document.getElementById('audioPlayer');
+          const audio = document.getElementById('persistentAudio');
           if (audio) {
             audio.play().then(() => {
               // Update play button
