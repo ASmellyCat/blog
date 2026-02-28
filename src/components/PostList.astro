@@ -17,10 +17,10 @@ const { posts } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
 const categoryMeta: Record<string, { cn: string; en: string; neonClass: string; glowClass: string; boxGlowClass: string; borderColor: string }> = {
-  stories: { cn: '故事', en: 'Stories', neonClass: 'neon-cyan', glowClass: 'glow-cyan', boxGlowClass: 'box-glow-cyan', borderColor: 'rgba(0, 240, 255, 0.2)' },
-  feelings: { cn: '心情', en: 'Feelings', neonClass: 'neon-pink', glowClass: 'glow-pink', boxGlowClass: 'box-glow-pink', borderColor: 'rgba(255, 45, 120, 0.2)' },
-  essays: { cn: '随笔', en: 'Essays', neonClass: 'neon-green', glowClass: 'glow-green', boxGlowClass: 'box-glow-green', borderColor: 'rgba(57, 255, 20, 0.2)' },
-  dreams: { cn: '梦境', en: 'Dreams', neonClass: 'neon-purple', glowClass: 'glow-purple', boxGlowClass: 'box-glow-purple', borderColor: 'rgba(191, 64, 255, 0.2)' },
+  stories: { cn: '故事', en: 'Stories', neonClass: 'neon-cyan', glowClass: 'glow-cyan', boxGlowClass: 'box-glow-cyan', borderColor: 'rgba(0, 240, 255, 0.2)', strokeColor: 'rgba(0, 240, 255, 0.6)', glowColor: 'rgba(0, 240, 255, 0.5)' },
+  feelings: { cn: '心情', en: 'Feelings', neonClass: 'neon-pink', glowClass: 'glow-pink', boxGlowClass: 'box-glow-pink', borderColor: 'rgba(255, 45, 120, 0.2)', strokeColor: 'rgba(255, 45, 120, 0.6)', glowColor: 'rgba(255, 45, 120, 0.5)' },
+  essays: { cn: '随笔', en: 'Essays', neonClass: 'neon-green', glowClass: 'glow-green', boxGlowClass: 'box-glow-green', borderColor: 'rgba(57, 255, 20, 0.2)', strokeColor: 'rgba(57, 255, 20, 0.6)', glowColor: 'rgba(57, 255, 20, 0.5)' },
+  dreams: { cn: '梦境', en: 'Dreams', neonClass: 'neon-purple', glowClass: 'glow-purple', boxGlowClass: 'box-glow-purple', borderColor: 'rgba(191, 64, 255, 0.2)', strokeColor: 'rgba(191, 64, 255, 0.6)', glowColor: 'rgba(191, 64, 255, 0.5)' },
 };
 
 const sorted = posts.sort(
@@ -38,6 +38,7 @@ const sorted = posts.sort(
         data-glow-class={meta?.glowClass}
         data-box-glow-class={meta?.boxGlowClass}
         data-border-color={meta?.borderColor}
+        style={`--card-glow-color: ${meta?.glowColor || "rgba(0,240,255,0.5)"};`}
       >
         <div class="flex items-center gap-3 mb-3">
           <span class:list={[
@@ -60,7 +61,7 @@ const sorted = posts.sort(
             })}
           </time>
         </div>
-        <h3 class="post-title text-2xl leading-snug tracking-tight transition-all duration-300" style="font-family: 'Orbitron', 'Noto Sans SC', sans-serif; font-weight: 800; -webkit-text-stroke: 0.8px rgba(0, 240, 255, 0.5); paint-order: stroke fill; text-shadow: 0 0 7px rgba(0, 240, 255, 0.6), 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(191, 64, 255, 0.2), 0 0 60px rgba(255, 45, 120, 0.1); color: #e0f7ff;">
+        <h3 class="post-title text-2xl leading-snug tracking-tight transition-all duration-300" style={`font-family: 'Orbitron', 'Noto Sans SC', sans-serif; font-weight: 800; color: #fff; -webkit-text-stroke: 1px ${meta?.strokeColor || 'rgba(255,255,255,0.3)'}; paint-order: stroke fill; text-shadow: none;`}>
           {post.data.title}
         </h3>
         {post.data.description && (

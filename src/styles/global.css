@@ -454,29 +454,21 @@ article h1 {
   letter-spacing: 0.08em !important;
 }
 
-/* ALL post card titles - always neon glow */
+/* Post card titles - outline only, no glow by default */
 h3.post-title {
-  color: #e0f7ff !important;
-  -webkit-text-stroke: 0.8px rgba(0, 240, 255, 0.5) !important;
+  color: #fff !important;
   paint-order: stroke fill !important;
-  text-shadow:
-    0 0 7px rgba(0, 240, 255, 0.6),
-    0 0 20px rgba(0, 240, 255, 0.3),
-    0 0 40px rgba(191, 64, 255, 0.2),
-    0 0 60px rgba(255, 45, 120, 0.1) !important;
-  transition: all 0.3s ease !important;
+  text-shadow: none !important;
+  transition: text-shadow 0.3s ease, -webkit-text-stroke 0.3s ease !important;
 }
 
-/* Post card titles - stronger hover glow */
+/* Hover: add glow matching the stroke color */
 a:hover h3.post-title,
 .post-card:hover h3.post-title {
-  color: #fff !important;
-  -webkit-text-stroke: 1px rgba(0, 240, 255, 0.7) !important;
   text-shadow:
-    0 0 10px rgba(0, 240, 255, 0.9),
-    0 0 25px rgba(0, 240, 255, 0.6),
-    0 0 50px rgba(191, 64, 255, 0.4),
-    0 0 80px rgba(255, 45, 120, 0.3) !important;
+    0 0 8px var(--card-glow-color, rgba(0, 240, 255, 0.6)),
+    0 0 20px var(--card-glow-color, rgba(0, 240, 255, 0.3)),
+    0 0 40px var(--card-glow-color, rgba(0, 240, 255, 0.15)) !important;
 }
 
 /* Article page title */
