@@ -1,0 +1,347 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="发布 — coconut的梦游仙境" description="Admin panel">
+  <div class="min-h-screen flex items-center justify-center px-4" id="loginScreen">
+    <div class="content-panel p-8 rounded-2xl max-w-sm w-full">
+      <h1 class="text-xl font-bold mb-6 neon-cyan" style="font-family: 'Orbitron', sans-serif;">ACCESS</h1>
+      <input type="password" id="authPassword" placeholder="Enter password" 
+        class="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-sm text-[var(--color-text)] focus:outline-none focus:border-[var(--color-neon-cyan)] transition-colors" />
+      <button id="loginBtn" class="mt-4 w-full py-3 rounded-lg text-sm font-medium tracking-wider neon-btn">
+        AUTHENTICATE
+      </button>
+      <p id="loginError" class="mt-3 text-xs text-red-400 hidden">Access denied.</p>
+    </div>
+  </div>
+
+  <div class="hidden min-h-screen" id="editorScreen">
+    <div class="max-w-3xl mx-auto px-6 py-12">
+      <div class="flex items-center justify-between mb-10">
+        <h1 class="text-2xl font-bold neon-cyan" style="font-family: 'Orbitron', sans-serif;">NEW POST</h1>
+        <a href={`${import.meta.env.BASE_URL}`} class="text-xs text-[var(--color-text-muted)] neon-link">← Back</a>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Category -->
+        <div>
+          <label class="block text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-2 font-light">Category</label>
+          <div class="flex gap-3" id="categoryPicker">
+            <button data-cat="dreams" class="cat-btn px-4 py-2 rounded-full text-xs tracking-wider border border-[rgba(191,64,255,0.3)] neon-purple transition-all">梦境</button>
+            <button data-cat="stories" class="cat-btn px-4 py-2 rounded-full text-xs tracking-wider border border-[rgba(0,240,255,0.3)] neon-cyan transition-all">故事</button>
+            <button data-cat="essays" class="cat-btn px-4 py-2 rounded-full text-xs tracking-wider border border-[rgba(57,255,20,0.3)] neon-green transition-all">随笔</button>
+            <button data-cat="feelings" class="cat-btn px-4 py-2 rounded-full text-xs tracking-wider border border-[rgba(255,45,120,0.3)] neon-pink transition-all">心情</button>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div>
+          <label class="block text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-2 font-light">Title</label>
+          <input type="text" id="postTitle" placeholder="文章标题" 
+            class="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-lg text-[var(--color-text)] focus:outline-none focus:border-[var(--color-neon-cyan)] transition-colors" style="font-family: 'Orbitron', 'Noto Sans SC', sans-serif;" />
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-2 font-light">Description <span class="opacity-50">(optional)</span></label>
+          <input type="text" id="postDesc" placeholder="一句话描述" 
+            class="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-sm text-[var(--color-text)] focus:outline-none focus:border-[var(--color-neon-cyan)] transition-colors" />
+        </div>
+
+        <!-- Toolbar -->
+        <div>
+          <label class="block text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-2 font-light">Content</label>
+          <div class="flex gap-2 mb-2">
+            <button class="fmt-btn px-3 py-1.5 rounded text-xs bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-neon-cyan)] transition-colors" data-fmt="bold" title="Bold"><b>B</b></button>
+            <button class="fmt-btn px-3 py-1.5 rounded text-xs bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-neon-cyan)] transition-colors" data-fmt="italic" title="Italic"><i>I</i></button>
+            <button class="fmt-btn px-3 py-1.5 rounded text-xs bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-neon-cyan)] transition-colors" data-fmt="h2" title="Heading">H2</button>
+            <button class="fmt-btn px-3 py-1.5 rounded text-xs bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-neon-cyan)] transition-colors" data-fmt="quote" title="Quote">"</button>
+            <button class="fmt-btn px-3 py-1.5 rounded text-xs bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-neon-cyan)] transition-colors" data-fmt="hr" title="Divider">—</button>
+            <button class="fmt-btn px-3 py-1.5 rounded text-xs bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-neon-pink)] transition-colors" data-fmt="image" title="Insert Image">🖼</button>
+          </div>
+          <textarea id="postContent" rows="18" placeholder="写点什么..."
+            class="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-sm text-[var(--color-text)] leading-relaxed focus:outline-none focus:border-[var(--color-neon-cyan)] transition-colors resize-y font-light"></textarea>
+          <div class="flex justify-between mt-2">
+            <span id="charCount" class="text-[10px] text-[var(--color-text-muted)]">0 chars</span>
+            <input type="file" id="imageUpload" accept="image/*" class="hidden" />
+          </div>
+        </div>
+
+        <!-- Publish -->
+        <div class="flex gap-4 pt-4">
+          <button id="previewBtn" class="px-6 py-3 rounded-lg text-sm font-medium tracking-wider border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-neon-cyan)] transition-all">
+            PREVIEW
+          </button>
+          <button id="publishBtn" class="flex-1 py-3 rounded-lg text-sm font-medium tracking-wider neon-btn">
+            PUBLISH
+          </button>
+        </div>
+
+        <!-- Status -->
+        <div id="publishStatus" class="hidden text-center py-4">
+          <p class="text-sm neon-cyan animate-pulse">Publishing...</p>
+        </div>
+        <div id="publishSuccess" class="hidden text-center py-4">
+          <p class="text-sm neon-green">✓ Published! Deploying in ~1 min.</p>
+          <a id="postLink" href="#" class="text-xs neon-link neon-cyan mt-2 inline-block">View post →</a>
+        </div>
+        <div id="publishError" class="hidden text-center py-4">
+          <p class="text-sm text-red-400" id="errorMsg">Something went wrong.</p>
+        </div>
+      </div>
+
+      <!-- Preview modal -->
+      <div id="previewModal" class="hidden fixed inset-0 z-50 bg-[rgba(5,5,16,0.95)] overflow-y-auto">
+        <div class="max-w-3xl mx-auto px-8 py-16">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-lg neon-cyan" style="font-family: 'Orbitron', sans-serif;">PREVIEW</h2>
+            <button id="closePreview" class="text-[var(--color-text-muted)] hover:text-[var(--color-text)]">✕</button>
+          </div>
+          <div class="content-panel p-6 lg:p-8">
+            <div id="previewContent" class="prose-custom"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .neon-btn {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(191, 64, 255, 0.15));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--color-neon-cyan);
+      transition: all 0.3s ease;
+    }
+    .neon-btn:hover {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(191, 64, 255, 0.25));
+      border-color: rgba(0, 240, 255, 0.6);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    }
+    .cat-btn { opacity: 0.5; transition: all 0.3s; }
+    .cat-btn.active { opacity: 1; background: rgba(255,255,255,0.05); transform: scale(1.05); }
+  </style>
+
+  <script>
+    // Config
+    const GITHUB_REPO = 'ASmellyCat/blog';
+    const GITHUB_BRANCH = 'main';
+    const POST_PATH = 'src/content/posts';
+    // Password hash (SHA-256 of the password) - set this!
+    let GITHUB_TOKEN = '';
+    const ADMIN_PASS_HASH = '@@ADMIN_HASH@@'; // placeholder, will be set
+
+    // Simple hash function
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Login
+    const loginScreen = document.getElementById('loginScreen');
+    const editorScreen = document.getElementById('editorScreen');
+    const loginBtn = document.getElementById('loginBtn');
+    const authInput = document.getElementById('authPassword');
+    const loginError = document.getElementById('loginError');
+
+    // Check saved session
+    const savedToken = sessionStorage.getItem('blog_token');
+    if (savedToken) {
+      GITHUB_TOKEN = savedToken;
+      loginScreen.classList.add('hidden');
+      editorScreen.classList.remove('hidden');
+    }
+
+    loginBtn.addEventListener('click', async () => {
+      const pass = authInput.value;
+      if (!pass) return;
+      // Use the password as GitHub PAT directly
+      // Verify by making a test API call
+      try {
+        const resp = await fetch(`https://api.github.com/repos/${GITHUB_REPO}`, {
+          headers: { 'Authorization': `token ${pass}` }
+        });
+        if (resp.ok) {
+          GITHUB_TOKEN = pass;
+          sessionStorage.setItem('blog_token', pass);
+          loginScreen.classList.add('hidden');
+          editorScreen.classList.remove('hidden');
+          loginError.classList.add('hidden');
+        } else {
+          loginError.classList.remove('hidden');
+        }
+      } catch {
+        loginError.classList.remove('hidden');
+      }
+    });
+
+    authInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') loginBtn.click();
+    });
+
+    // Category picker
+    let selectedCategory = '';
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedCategory = btn.dataset.cat;
+      });
+    });
+
+    // Formatting toolbar
+    const contentArea = document.getElementById('postContent');
+    const charCount = document.getElementById('charCount');
+
+    contentArea.addEventListener('input', () => {
+      charCount.textContent = `${contentArea.value.length} chars`;
+    });
+
+    document.querySelectorAll('.fmt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const fmt = btn.dataset.fmt;
+        const start = contentArea.selectionStart;
+        const end = contentArea.selectionEnd;
+        const selected = contentArea.value.substring(start, end);
+        let insert = '';
+
+        switch(fmt) {
+          case 'bold': insert = `**${selected || '粗体文字'}**`; break;
+          case 'italic': insert = `*${selected || '斜体文字'}*`; break;
+          case 'h2': insert = `\n## ${selected || '标题'}\n`; break;
+          case 'quote': insert = `\n> ${selected || '引用文字'}\n`; break;
+          case 'hr': insert = `\n---\n`; break;
+          case 'image':
+            document.getElementById('imageUpload').click();
+            return;
+        }
+
+        contentArea.setRangeText(insert, start, end, 'end');
+        contentArea.focus();
+        charCount.textContent = `${contentArea.value.length} chars`;
+      });
+    });
+
+    // Image upload
+    document.getElementById('imageUpload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result.split(',')[1];
+        const ext = file.name.split('.').pop();
+        const imgName = `img-${Date.now()}.${ext}`;
+        const imgPath = `public/images/${imgName}`;
+        
+        try {
+          // Upload image to GitHub
+          const resp = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${imgPath}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${GITHUB_TOKEN}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: `upload image: ${imgName}`,
+              content: base64,
+              branch: GITHUB_BRANCH,
+            })
+          });
+          
+          if (resp.ok) {
+            const base = '/blog';
+            const mdImg = `\n![${file.name}](${base}/images/${imgName})\n`;
+            const pos = contentArea.selectionStart;
+            contentArea.setRangeText(mdImg, pos, pos, 'end');
+            contentArea.focus();
+          } else {
+            alert('Image upload failed');
+          }
+        } catch (err) {
+          alert('Image upload failed: ' + err.message);
+        }
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    });
+
+    // Preview
+    document.getElementById('previewBtn').addEventListener('click', () => {
+      const content = contentArea.value
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+        .replace(/^---$/gm, '<hr>')
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%;border-radius:8px;margin:1rem 0">')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+      
+      document.getElementById('previewContent').innerHTML = `<p>${content}</p>`;
+      document.getElementById('previewModal').classList.remove('hidden');
+    });
+
+    document.getElementById('closePreview').addEventListener('click', () => {
+      document.getElementById('previewModal').classList.add('hidden');
+    });
+
+    // Publish
+    document.getElementById('publishBtn').addEventListener('click', async () => {
+      const title = document.getElementById('postTitle').value.trim();
+      const desc = document.getElementById('postDesc').value.trim();
+      const content = contentArea.value.trim();
+
+      if (!selectedCategory) { alert('请选择分类'); return; }
+      if (!title) { alert('请输入标题'); return; }
+      if (!content) { alert('请输入内容'); return; }
+
+      const statusEl = document.getElementById('publishStatus');
+      const successEl = document.getElementById('publishSuccess');
+      const errorEl = document.getElementById('publishError');
+      
+      statusEl.classList.remove('hidden');
+      successEl.classList.add('hidden');
+      errorEl.classList.add('hidden');
+
+      // Generate filename
+      const slug = title.replace(/[^\w\u4e00-\u9fff]+/g, '-').toLowerCase().replace(/^-|-$/g, '') || `post-${Date.now()}`;
+      const filename = `${slug}.md`;
+      const now = new Date().toISOString();
+
+      // Build frontmatter
+      let frontmatter = `---\ntitle: "${title}"\ndate: ${now}\ncategory: ${selectedCategory}\n`;
+      if (desc) frontmatter += `description: "${desc}"\n`;
+      frontmatter += `---\n\n${content}`;
+
+      try {
+        const resp = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${POST_PATH}/${filename}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: `new post: ${title}`,
+            content: btoa(unescape(encodeURIComponent(frontmatter))),
+            branch: GITHUB_BRANCH,
+          })
+        });
+
+        statusEl.classList.add('hidden');
+
+        if (resp.ok) {
+          successEl.classList.remove('hidden');
+          document.getElementById('postLink').href = `/blog/posts/${slug}`;
+        } else {
+          const data = await resp.json();
+          document.getElementById('errorMsg').textContent = data.message || 'Publishing failed';
+          errorEl.classList.remove('hidden');
+        }
+      } catch (err) {
+        statusEl.classList.add('hidden');
+        document.getElementById('errorMsg').textContent = err.message;
+        errorEl.classList.remove('hidden');
+      }
+    });
+  </script>
+</BaseLayout>
