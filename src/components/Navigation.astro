@@ -2,10 +2,10 @@
 const base = import.meta.env.BASE_URL;
 
 const categories = [
-  { cn: '故事', en: 'Stories', href: `${base}stories`, neonClass: 'neon-cyan', glowClass: 'glow-cyan', boxGlowClass: 'box-glow-cyan', borderColor: 'rgba(0, 240, 255, 0.3)' },
-  { cn: '心情', en: 'Feelings', href: `${base}feelings`, neonClass: 'neon-pink', glowClass: 'glow-pink', boxGlowClass: 'box-glow-pink', borderColor: 'rgba(255, 45, 120, 0.3)' },
-  { cn: '随笔', en: 'Essays', href: `${base}essays`, neonClass: 'neon-green', glowClass: 'glow-green', boxGlowClass: 'box-glow-green', borderColor: 'rgba(57, 255, 20, 0.3)' },
-  { cn: '梦境', en: 'Dreams', href: `${base}dreams`, neonClass: 'neon-purple', glowClass: 'glow-purple', boxGlowClass: 'box-glow-purple', borderColor: 'rgba(191, 64, 255, 0.3)' },
+  { cn: '故事', en: 'Stories', href: `${base}/stories`, neonClass: 'neon-cyan', glowClass: 'glow-cyan', boxGlowClass: 'box-glow-cyan', borderColor: 'rgba(0, 240, 255, 0.3)' },
+  { cn: '心情', en: 'Feelings', href: `${base}/feelings`, neonClass: 'neon-pink', glowClass: 'glow-pink', boxGlowClass: 'box-glow-pink', borderColor: 'rgba(255, 45, 120, 0.3)' },
+  { cn: '随笔', en: 'Essays', href: `${base}/essays`, neonClass: 'neon-green', glowClass: 'glow-green', boxGlowClass: 'box-glow-green', borderColor: 'rgba(57, 255, 20, 0.3)' },
+  { cn: '梦境', en: 'Dreams', href: `${base}/dreams`, neonClass: 'neon-purple', glowClass: 'glow-purple', boxGlowClass: 'box-glow-purple', borderColor: 'rgba(191, 64, 255, 0.3)' },
 ];
 ---
 
@@ -76,7 +76,7 @@ const categories = [
     </div>
     <div>
       <a
-        href={`${base}about`}
+        href={`${base}/about`}
         class="neon-link text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300 font-light"
         style="font-family: 'Orbitron', sans-serif;"
       >
