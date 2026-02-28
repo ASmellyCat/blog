@@ -444,49 +444,191 @@ h1, h2, h3 {
 }
 
 /* ============================================
-   CJK Title Styling - Cyberpunk
+   CJK Title Styling - Cyberpunk Neon
    ============================================ */
 
-h1[style*="Orbitron"],
-h3[style*="Orbitron"],
+article h1,
 .post-title {
   font-family: 'Orbitron', 'Noto Sans SC', sans-serif !important;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  -webkit-text-stroke: 0.5px rgba(0, 240, 255, 0.4);
-  paint-order: stroke fill;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em;
 }
 
-/* Neon rainbow outline glow for titles */
-h1[style*="Orbitron"],
+/* Neon glow on article page titles */
 article header h1 {
+  color: #fff !important;
+  -webkit-text-stroke: 1px rgba(0, 240, 255, 0.6) !important;
+  paint-order: stroke fill;
   text-shadow:
-    0 0 5px rgba(0, 240, 255, 0.4),
-    0 0 15px rgba(0, 240, 255, 0.2),
-    0 0 30px rgba(191, 64, 255, 0.15),
-    0 0 60px rgba(255, 45, 120, 0.1);
-  transition: text-shadow 0.3s ease;
+    0 0 7px rgba(0, 240, 255, 0.8),
+    0 0 20px rgba(0, 240, 255, 0.5),
+    0 0 40px rgba(191, 64, 255, 0.4),
+    0 0 80px rgba(255, 45, 120, 0.25) !important;
 }
 
-h1[style*="Orbitron"]:hover,
-article header h1:hover {
+/* Category page titles */
+header h1 {
   text-shadow:
-    0 0 8px rgba(0, 240, 255, 0.6),
-    0 0 20px rgba(0, 240, 255, 0.4),
-    0 0 40px rgba(191, 64, 255, 0.3),
-    0 0 80px rgba(255, 45, 120, 0.2);
+    0 0 7px rgba(0, 240, 255, 0.6),
+    0 0 20px rgba(0, 240, 255, 0.3),
+    0 0 40px rgba(191, 64, 255, 0.2) !important;
 }
 
-/* Post card title hover glow */
+/* Post card titles - subtle glow */
 .post-title {
-  text-shadow: none;
-  transition: text-shadow 0.3s ease, -webkit-text-stroke 0.3s ease;
+  color: var(--color-text);
+  -webkit-text-stroke: 0.3px rgba(0, 240, 255, 0.2);
+  text-shadow:
+    0 0 10px rgba(0, 240, 255, 0.15),
+    0 0 25px rgba(191, 64, 255, 0.08) !important;
+  transition: all 0.3s ease;
 }
 
-a:hover .post-title {
+/* Post card titles - hover glow */
+a:hover .post-title,
+.post-card:hover .post-title {
+  color: #fff;
+  -webkit-text-stroke: 0.8px rgba(0, 240, 255, 0.5);
   text-shadow:
-    0 0 8px rgba(0, 240, 255, 0.5),
-    0 0 20px rgba(191, 64, 255, 0.25),
-    0 0 40px rgba(255, 45, 120, 0.15);
-  -webkit-text-stroke: 0.5px rgba(0, 240, 255, 0.6);
+    0 0 10px rgba(0, 240, 255, 0.7),
+    0 0 25px rgba(0, 240, 255, 0.4),
+    0 0 50px rgba(191, 64, 255, 0.3),
+    0 0 80px rgba(255, 45, 120, 0.2) !important;
+}
+
+/* ============================================
+   Cyberpunk Music Player
+   ============================================ */
+
+.music-player__container {
+  background: rgba(5, 5, 16, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 12px;
+  padding: 12px 14px;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.music-player__container:hover {
+  border-color: rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.08);
+}
+
+.music-player__visualizer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  height: 24px;
+  margin-bottom: 8px;
+}
+
+.viz-bar {
+  width: 3px;
+  height: 4px;
+  background: var(--color-neon-cyan);
+  border-radius: 1px;
+  transition: height 0.15s ease;
+  opacity: 0.3;
+}
+
+.music-player.playing .viz-bar {
+  animation: viz-bounce 0.6s ease-in-out infinite alternate;
+  opacity: 1;
+}
+
+.viz-bar:nth-child(1) { animation-delay: 0s; }
+.viz-bar:nth-child(2) { animation-delay: 0.08s; }
+.viz-bar:nth-child(3) { animation-delay: 0.16s; }
+.viz-bar:nth-child(4) { animation-delay: 0.24s; }
+.viz-bar:nth-child(5) { animation-delay: 0.32s; }
+.viz-bar:nth-child(6) { animation-delay: 0.24s; }
+.viz-bar:nth-child(7) { animation-delay: 0.16s; }
+.viz-bar:nth-child(8) { animation-delay: 0.08s; }
+.viz-bar:nth-child(9) { animation-delay: 0s; }
+
+@keyframes viz-bounce {
+  0% { height: 3px; background: rgba(0, 240, 255, 0.6); }
+  50% { background: rgba(191, 64, 255, 0.8); }
+  100% { height: 20px; background: rgba(255, 45, 120, 0.7); }
+}
+
+.music-player__title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-player.playing .music-player__title {
+  color: var(--color-neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+.music-player__progress {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.music-player__progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-neon-cyan), var(--color-neon-purple));
+  border-radius: 1px;
+  transition: width 0.3s linear;
+}
+
+.music-player__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.music-ctrl {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s, text-shadow 0.2s;
+  font-family: sans-serif;
+}
+
+.music-ctrl:hover {
+  color: var(--color-neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.music-ctrl--play {
+  font-size: 14px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.music-ctrl--play:hover {
+  border-color: rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+/* Hide on mobile (sidebar is hidden) */
+@media (max-width: 1023px) {
+  .music-player { display: none; }
 }
