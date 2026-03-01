@@ -2,6 +2,7 @@
 title: "观者"
 date: 2026-02-26T21:30:00
 category: stories
+lang: zh
 description: "一个关于愤怒、平静与神性的背景故事。"
 ---
 

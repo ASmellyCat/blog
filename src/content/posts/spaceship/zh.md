@@ -2,6 +2,7 @@
 title: "太空飞船"
 date: 2026-02-22T03:15:00
 category: dreams
+lang: zh
 description: "一个关于报名坐飞船的梦。"
 ---
 

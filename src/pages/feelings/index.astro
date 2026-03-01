@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Navigation from '../../components/Navigation.astro';
 import PostList from '../../components/PostList.astro';
 
-const posts = await getCollection('posts', ({ data }) => data.category === 'feelings');
+const posts = await getCollection('posts', ({ data }) => data.category === 'feelings' && data.lang === 'zh');
 ---
 
 <BaseLayout title="心情 / Feelings — coconut的梦游仙境">

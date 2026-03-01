@@ -2,6 +2,7 @@
 title: "娱乐厅"
 date: 2026-02-24T23:10:00
 category: dreams
+lang: zh
 description: "一个关于暗门背后秘密的梦。"
 ---
 

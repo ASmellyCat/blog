@@ -2,6 +2,7 @@
 title: "性本乱"
 date: 2026-02-25T15:45:00
 category: essays
+lang: zh
 description: "人之初，性本善还是性本恶？一场和自己的辩论。"
 ---
 
