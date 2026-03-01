@@ -3,7 +3,6 @@ title: "Beautiful Mind"
 date: 2026-02-23T14:20:00
 category: feelings
 description: "被人认真看见了一下。"
-lang: zh
 ---
 
 今天和counsellor聊天。

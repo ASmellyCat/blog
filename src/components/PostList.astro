@@ -33,7 +33,7 @@ const sorted = posts.sort(
     const meta = categoryMeta[post.data.category];
     return (
       <a
-        href={`${base}/posts/${post.id.replace(/\/(zh|en)$/, '')}`}
+        href={`${base}/posts/${post.id}`}
         class="post-card cyber-card block p-6 rounded-xl transition-all duration-300"
         data-glow-class={meta?.glowClass}
         data-box-glow-class={meta?.boxGlowClass}
