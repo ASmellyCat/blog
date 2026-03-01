@@ -8,12 +8,12 @@
 
 ## Features
 
-- 🎨 **Cyberpunk aesthetic** — neon glows, animated grid background, glitch effects, scanlines, and floating particles
-- 🌐 **Bilingual (中/EN)** — every article available in Chinese and English with a one-click toggle
-- 🎵 **Built-in music player** — persistent playback across pages via SPA navigation
-- ⚡ **SPA transitions** — smooth page transitions without full reloads, with cyberpunk-style loading effects
-- 🚀 **Splash screen** — boot-sequence intro animation on first visit
-- 📱 **Fully responsive** — sidebar navigation on desktop, compact top bar on mobile
+- **Cyberpunk aesthetic** — neon glows, animated grid background, glitch effects, scanlines, and floating particles
+- **Bilingual (中/EN)** — every article available in Chinese and English with a one-click toggle
+- **Built-in music player** — persistent playback across pages via SPA navigation
+- **SPA transitions** — smooth page transitions without full reloads, with cyberpunk-style loading effects
+- **Splash screen** — boot-sequence intro animation on first visit
+- **Fully responsive** — sidebar navigation on desktop, compact top bar on mobile
 
 ## Article Page
 
