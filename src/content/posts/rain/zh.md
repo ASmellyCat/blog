@@ -3,6 +3,7 @@ title: "雨声"
 date: 2026-02-27T18:00:00
 category: stories
 description: "两个人，一支录音笔，和一场下不完的雨。"
+lang: zh
 ---
 
 他们是在高中认识的。
