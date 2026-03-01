@@ -64,27 +64,26 @@ const meta = categoryMeta[categorySlug];
             </time>
             {zhPost && enPost && (
               <div class="lang-toggle ml-auto flex items-center gap-0 text-xs" style="font-family: 'Orbitron', sans-serif;">
-                <button id="btn-zh" class="lang-btn active px-2.5 py-1 rounded-l border border-r-0 transition-all duration-300" onclick="window.__setLang('zh')">中</button>
-                <button id="btn-en" class="lang-btn px-2.5 py-1 rounded-r border transition-all duration-300" onclick="window.__setLang('en')">EN</button>
+                <button id="btn-zh" class="lang-btn active px-2.5 py-1 rounded-l border border-r-0 transition-all duration-300">中</button>
+                <button id="btn-en" class="lang-btn px-2.5 py-1 rounded-r border transition-all duration-300">EN</button>
               </div>
             )}
           </div>
-          {zhPost && (
-            <div id="header-zh">
-              <h1 class="text-3xl lg:text-4xl font-bold leading-tight tracking-tight" style="font-family: 'Orbitron', sans-serif;">{zhPost.data.title}</h1>
-              {zhPost.data.description && (
+          <div>
+            <h1 class="text-3xl lg:text-4xl font-bold leading-tight tracking-tight" style="font-family: 'Orbitron', sans-serif;">
+              {zhPost && enPost ? `${zhPost.data.title} | ${enPost.data.title}` : post.data.title}
+            </h1>
+            <div id="desc-zh">
+              {zhPost?.data.description && (
                 <p class="mt-6 text-base text-[var(--color-text-muted)] leading-relaxed font-light">{zhPost.data.description}</p>
               )}
             </div>
-          )}
-          {enPost && (
-            <div id="header-en" style="display:none;">
-              <h1 class="text-3xl lg:text-4xl font-bold leading-tight tracking-tight" style="font-family: 'Orbitron', sans-serif;">{enPost.data.title}</h1>
-              {enPost.data.description && (
+            <div id="desc-en" style="display:none;">
+              {enPost?.data.description && (
                 <p class="mt-6 text-base text-[var(--color-text-muted)] leading-relaxed font-light">{enPost.data.description}</p>
               )}
             </div>
-          )}
+          </div>
         </header>
         <div class="content-panel p-6 lg:p-8">
           {zhRender && (
@@ -224,22 +223,22 @@ const meta = categoryMeta[categorySlug];
 
 <script is:inline>
   window.__setLang = function(lang) {
-    var headerZh = document.getElementById('header-zh');
-    var headerEn = document.getElementById('header-en');
+    var descZh = document.getElementById('desc-zh');
+    var descEn = document.getElementById('desc-en');
     var contentZh = document.getElementById('content-zh');
     var contentEn = document.getElementById('content-en');
     var btnZh = document.getElementById('btn-zh');
     var btnEn = document.getElementById('btn-en');
     if (lang === 'en') {
-      if (headerZh) headerZh.style.display = 'none';
-      if (headerEn) headerEn.style.display = '';
+      if (descZh) descZh.style.display = 'none';
+      if (descEn) descEn.style.display = '';
       if (contentZh) contentZh.style.display = 'none';
       if (contentEn) contentEn.style.display = '';
       if (btnZh) btnZh.classList.remove('active');
       if (btnEn) btnEn.classList.add('active');
     } else {
-      if (headerZh) headerZh.style.display = '';
-      if (headerEn) headerEn.style.display = 'none';
+      if (descZh) descZh.style.display = '';
+      if (descEn) descEn.style.display = 'none';
       if (contentZh) contentZh.style.display = '';
       if (contentEn) contentEn.style.display = 'none';
       if (btnZh) btnZh.classList.add('active');
@@ -247,7 +246,19 @@ const meta = categoryMeta[categorySlug];
     }
     localStorage.setItem('preferred-lang', lang);
   };
+  // Auto-init & event delegation (survives SPA navigation)
   (function() {
+    // Event delegation on document - always works
+    if (!window.__langDelegated) {
+      window.__langDelegated = true;
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('#btn-zh, #btn-en');
+        if (!btn) return;
+        if (btn.id === 'btn-zh') window.__setLang('zh');
+        if (btn.id === 'btn-en') window.__setLang('en');
+      });
+    }
+    // Init current page
     var btnZh = document.getElementById('btn-zh');
     if (!btnZh) return;
     var saved = localStorage.getItem('preferred-lang');
