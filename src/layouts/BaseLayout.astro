@@ -151,6 +151,9 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
           // Re-bind music player UI
           if (window.__musicRebind) window.__musicRebind();
 
+          // Re-init language toggle
+          if (window.__langInit) window.__langInit();
+
           // Re-run any inline scripts in new content
           oldContent?.querySelectorAll('script').forEach(oldScript => {
             const newScript = document.createElement('script');

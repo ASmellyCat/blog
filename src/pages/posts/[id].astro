@@ -246,8 +246,8 @@ const meta = categoryMeta[categorySlug];
     }
     localStorage.setItem('preferred-lang', lang);
   };
-  // Auto-init & event delegation (survives SPA navigation)
-  (function() {
+  // Register global init function for SPA navigation
+  window.__langInit = function() {
     // Event delegation on document - always works
     if (!window.__langDelegated) {
       window.__langDelegated = true;
@@ -267,7 +267,8 @@ const meta = categoryMeta[categorySlug];
       var bl = navigator.language || '';
       window.__setLang(bl.startsWith('zh') ? 'zh' : 'en');
     }
-  })();
+  };
+  window.__langInit();
 </script>
 
 <script>
