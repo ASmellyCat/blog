@@ -123,7 +123,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <script>
     // Config
-    const GITHUB_REPO = 'ASmellyCat/blog';
+    const GITHUB_REPO = 'ASmellyCat/dreamscape';
     const GITHUB_BRANCH = 'main';
     const POST_PATH = 'src/content/posts';
     // Password hash (SHA-256 of the password) - set this!
@@ -249,7 +249,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           });
           
           if (resp.ok) {
-            const base = '/blog';
+            const base = '/dreamscape';
             const mdImg = `\n![${file.name}](${base}/images/${imgName})\n`;
             const pos = contentArea.selectionStart;
             contentArea.setRangeText(mdImg, pos, pos, 'end');
@@ -331,7 +331,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         if (resp.ok) {
           successEl.classList.remove('hidden');
-          document.getElementById('postLink').href = `/blog/posts/${slug}`;
+          document.getElementById('postLink').href = `/dreamscape/posts/${slug}`;
         } else {
           const data = await resp.json();
           document.getElementById('errorMsg').textContent = data.message || 'Publishing failed';

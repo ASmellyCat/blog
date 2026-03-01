@@ -2,7 +2,7 @@
 
 > A cyberpunk-themed personal blog — stories, dreams, feelings, and essays in Chinese and English.
 
-**[🔗 Live Site](https://asmellycat.github.io/blog)**
+**[🔗 Live Site](https://asmellycat.github.io/dreamscape)**
 
 ![Home Page](docs/home.jpg)
 
