@@ -151,8 +151,47 @@ const { title, description = 'coconut的梦游仙境 — A personal blog' } = As
           // Re-bind music player UI
           if (window.__musicRebind) window.__musicRebind();
 
-          // Re-init language toggle
-          if (window.__langInit) window.__langInit();
+          // Re-init language toggle after SPA navigation
+          (function() {
+            if (!window.__langDelegated) {
+              window.__langDelegated = true;
+              document.addEventListener('click', function(e) {
+                var btn = e.target.closest('#btn-zh, #btn-en');
+                if (!btn) return;
+                var lang = btn.id === 'btn-en' ? 'en' : 'zh';
+                var descZh = document.getElementById('desc-zh');
+                var descEn = document.getElementById('desc-en');
+                var contentZh = document.getElementById('content-zh');
+                var contentEn = document.getElementById('content-en');
+                var btnZh = document.getElementById('btn-zh');
+                var btnEn = document.getElementById('btn-en');
+                if (lang === 'en') {
+                  if (descZh) descZh.style.display = 'none';
+                  if (descEn) descEn.style.display = '';
+                  if (contentZh) contentZh.style.display = 'none';
+                  if (contentEn) contentEn.style.display = '';
+                  if (btnZh) btnZh.classList.remove('active');
+                  if (btnEn) btnEn.classList.add('active');
+                } else {
+                  if (descZh) descZh.style.display = '';
+                  if (descEn) descEn.style.display = 'none';
+                  if (contentZh) contentZh.style.display = '';
+                  if (contentEn) contentEn.style.display = 'none';
+                  if (btnZh) btnZh.classList.add('active');
+                  if (btnEn) btnEn.classList.remove('active');
+                }
+                localStorage.setItem('preferred-lang', lang);
+              });
+            }
+            // Apply saved preference
+            var btnZh = document.getElementById('btn-zh');
+            if (btnZh) {
+              var saved = localStorage.getItem('preferred-lang');
+              var lang = saved || (navigator.language.startsWith('zh') ? 'zh' : 'en');
+              btnZh.click(); // trigger delegation
+              document.getElementById('btn-' + lang)?.click();
+            }
+          })();
 
           // Re-run any inline scripts in new content
           oldContent?.querySelectorAll('script').forEach(oldScript => {
