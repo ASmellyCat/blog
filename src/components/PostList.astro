@@ -11,9 +11,10 @@ interface Post {
 
 interface Props {
   posts: Post[];
+  enTitles?: Record<string, string>;
 }
 
-const { posts } = Astro.props;
+const { posts, enTitles = {} } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
 const categoryMeta: Record<string, { cn: string; en: string; neonClass: string; glowClass: string; boxGlowClass: string; borderColor: string }> = {
@@ -62,7 +63,7 @@ const sorted = posts.sort(
           </time>
         </div>
         <h3 class="post-title text-2xl leading-snug tracking-tight transition-all duration-300" style={`font-family: 'Orbitron', 'Noto Sans SC', sans-serif; font-weight: 800; color: #fff; -webkit-text-stroke: 1px ${meta?.strokeColor || 'rgba(255,255,255,0.3)'}; paint-order: stroke fill; text-shadow: none;`}>
-          {post.data.title}
+          {enTitles[post.id.replace(/\/(zh|en)$/, "")] ? `${post.data.title} | ${enTitles[post.id.replace(/\/(zh|en)$/, "")]}` : post.data.title}
         </h3>
         {post.data.description && (
           <p class="mt-3 text-[var(--color-text-muted)] leading-relaxed font-light text-sm">

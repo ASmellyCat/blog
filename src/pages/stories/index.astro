@@ -5,6 +5,8 @@ import Navigation from '../../components/Navigation.astro';
 import PostList from '../../components/PostList.astro';
 
 const posts = await getCollection('posts', ({ data }) => data.category === 'stories' && data.lang === 'zh');
+const enPosts = await getCollection('posts', ({ data }) => data.category === 'stories' && data.lang === 'en');
+const enTitles = Object.fromEntries(enPosts.map(p => [p.id.replace(/\/(zh|en)$/, ''), p.data.title]));
 ---
 
 <BaseLayout title="故事 / Stories — coconut的梦游仙境">
@@ -16,7 +18,7 @@ const posts = await getCollection('posts', ({ data }) => data.category === 'stor
         <p class="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] font-light mb-4" style="font-family: 'Orbitron', sans-serif;">Stories</p>
         <p class="text-[var(--color-text-muted)] font-light text-sm">Ideas and inspirations.</p>
       </header>
-      <PostList posts={posts} />
+      <PostList posts={posts} enTitles={enTitles} />
     </main>
   </div>
 </BaseLayout>

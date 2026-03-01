@@ -5,6 +5,8 @@ import Navigation from '../components/Navigation.astro';
 import PostList from '../components/PostList.astro';
 
 const posts = await getCollection('posts', ({ data }) => data.lang === 'zh');
+const enPosts = await getCollection('posts', ({ data }) => data.lang === 'en');
+const enTitles = Object.fromEntries(enPosts.map(p => [p.id.replace(/\/(zh|en)$/, ''), p.data.title]));
 ---
 
 <BaseLayout title="coconut的梦游仙境">
@@ -26,7 +28,7 @@ const posts = await getCollection('posts', ({ data }) => data.lang === 'zh');
           Recent transmissions
         </p>
       </header>
-      <PostList posts={posts} />
+      <PostList posts={posts} enTitles={enTitles} />
     </main>
   </div>
 </BaseLayout>

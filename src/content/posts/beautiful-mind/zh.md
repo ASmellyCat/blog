@@ -1,5 +1,5 @@
 ---
-title: "Beautiful Mind"
+title: "美丽心灵"
 date: 2026-02-23T14:20:00
 category: feelings
 lang: zh
